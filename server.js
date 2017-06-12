@@ -1,9 +1,15 @@
-let p = new Promise(function(resolve, reject){
-    setTimeout(function() {
-        resolve("Resolve");
-    }, 0);
+const http = require('http');
+const Koa = require('koa');
+const render = require('koa-ejs');
+const Router = require('koa-router');
+
+const app = new Koa();
+const router = new Router();
+
+router.get('/', function(ctx){
+    ctx.body = "SOLID"
 });
-p.then(function (data) {
-    console.log(data);
-});
-+
+
+app.use(router.routes()).use(router.allowedMethods());
+console.log("Server running on localhost: 3000")
+app.listen(3000);
