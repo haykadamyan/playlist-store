@@ -13,8 +13,8 @@ const router = new Router();
 app.use(views(path.join(__dirname, '/view'), { extension: 'ejs' }));
 
 
-router.get('/', function(ctx){
-    ctx.body = "SOLID"
+router.get('/', async function(ctx){
+    await ctx.render('main');
 });
 
 
@@ -27,5 +27,6 @@ router.get('/playlist-page', async function(ctx){
 });
 
 app.use(router.routes()).use(router.allowedMethods());
+
 
 module.exports = app;
