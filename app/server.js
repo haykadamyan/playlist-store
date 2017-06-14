@@ -22,6 +22,10 @@ router.get('/create-playlist', async function(ctx){
     await ctx.render('create-playlist')
 });
 
+router.get('/playlist-page', async function(ctx){
+    await ctx.render('playlist-page', {title: "Playlist page"})
+});
+
 app.use(router.routes()).use(router.allowedMethods());
 
 
