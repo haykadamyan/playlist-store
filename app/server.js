@@ -19,15 +19,23 @@ const payment = {
     purchase: "0.99$"
 };
 
-router.get('/', function(ctx){
-    ctx.body = "SOLID"
+router.get('/', async function(ctx){
+    await ctx.render('main');
 });
 
 
-router.get('/payment', async function(ctx){
-    await ctx.render('payment', {payment: payment})
+router.get('/payment', async function(ctx) {
+    await ctx.render('payment', {payment: payment});
+});
+router.get('/playlist', async function(ctx){
+    await ctx.render('playlist')
+});
+
+router.get('/playlist-page', async function(ctx){
+    await ctx.render('playlist-page', {title: "Playlist page"})
 });
 
 app.use(router.routes()).use(router.allowedMethods());
+
 
 module.exports = app;
