@@ -7,11 +7,11 @@ const serve = require('koa-static');
 const views = require('koa-views');
 const path = require('path');
 
-const app = new Koa();
+const server = new Koa();
 
 const router = require("./services/router.js");
 
-app.use(views(path.join(__dirname, '/view'), { extension: 'ejs' }));
-app.use(serve('./public'));
-app.use(router.routes()).use(router.allowedMethods());
-module.exports = app;
+server.use(views(path.join(__dirname, '/view'), { extension: 'ejs' }));
+server.use(serve('./public'));
+server.use(router.routes()).use(router.allowedMethods());
+module.exports = server;
