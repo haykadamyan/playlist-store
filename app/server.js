@@ -1,31 +1,18 @@
 'use strict';
 
-const http = require('http');
 const Koa = require('koa');
-const render = require('koa-ejs');
-const Router = require('koa-router');
+const koaStatic = require('koa-static');
 const views = require('koa-views');
 const path = require('path');
 
-const app = new Koa();
-const router = new Router();
+const server = new Koa();
 
-app.use(views(path.join(__dirname, '/view'), { extension: 'ejs' }));
+const router = require("./services/router.js");
 
+server
+  .use(views(path.join(__dirname, '/view'), { extension: 'ejs' }))
+  .use(koaStatic('./public'))
+  .use(router.routes())
+  .use(router.allowedMethods());
 
-router.get('/', function(ctx){
-    ctx.body = "SOLID"
-});
-
-
-router.get('/create-playlist', async function(ctx){
-    await ctx.render('create-playlist')
-});
-
-router.get('/playlist-page', async function(ctx){
-    await ctx.render('playlist-page', {title: "Playlist page"})
-});
-
-app.use(router.routes()).use(router.allowedMethods());
-
-module.exports = app;
+module.exports = server;
