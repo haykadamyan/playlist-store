@@ -1,9 +1,9 @@
-'use strict'
+'use strict';
 
-const config = require('../config/config');
+const config = require('../../config/config');
 const passport = require('passport');
 const Router = require('koa-router');
-const userRoutes = require('./user');
+const userRoutes = require('../user');
 
 const router = new Router();
 
@@ -33,10 +33,9 @@ router.get('/create-playlist', async function (ctx) {
   await ctx.render('create-playlist', {title: "Create playlist"});
 });
 
-
 router.get('/auth/youtube',
   passport.authenticate('google',
-      {scope:config.google.scope, accessType: config.google.accessType, approvalPrompt: 'force'}
+      {scope: config.google.scope, accessType: config.google.accessType, approvalPrompt: 'force'}
     )
 );
 
@@ -46,7 +45,6 @@ router.get('/auth/youtube/callback',
     )
 );
 
-
 router.use(async function(ctx, next){
   if (ctx.isAuthenticated()){
     return next()
@@ -54,6 +52,5 @@ router.use(async function(ctx, next){
     ctx.redirect('/')
   }
 });
-
 
 module.exports = router;
