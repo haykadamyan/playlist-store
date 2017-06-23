@@ -33,4 +33,4 @@ passport.deserializeUser(async function(user, done) {
     done(null, user);
 });
 
-module.export = passport;
+module.exports = passport;
