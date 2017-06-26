@@ -3,15 +3,23 @@
 const Koa = require('koa');
 const koaStatic = require('koa-static');
 const views = require('koa-views');
+const session = require('koa-session');
 const path = require('path');
 
 const server = new Koa();
 
 const router = require("./services/router.js");
+const passport = require('./services/passport');
+const config = require('../config/config');
+
+server.keys = [config.koaSecret];
 
 server
   .use(views(path.join(__dirname, '/view'), { extension: 'ejs' }))
   .use(koaStatic('./public'))
+  .use(session(server))
+  .use(passport.initialize())
+  .use(passport.session())
   .use(router.routes())
   .use(router.allowedMethods());
 
