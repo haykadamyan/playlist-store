@@ -1,5 +1,5 @@
 const config  = require('../../config/config');
-const googleApis = require('googleapis');
+const google = require('googleapis');
 const promise = require('bluebird');
 
 let YoutubeAPI = function YoutubeAPI(clientID, secret, redirect, accessToken, refreshToken) {
@@ -9,7 +9,7 @@ let YoutubeAPI = function YoutubeAPI(clientID, secret, redirect, accessToken, re
         redirect
     );
 
-    this.OAuth2Client.setAccessType('offline');
+    // this.OAuth2Client.setAccessType('offline');
 
     this.OAuth2Client.setCredentials({
         access_token: accessToken,
@@ -25,7 +25,7 @@ let YoutubeAPI = function YoutubeAPI(clientID, secret, redirect, accessToken, re
 };
 
 
-YoutubeAPI.prototype.getPlaylists() = function() {
+YoutubeAPI.prototype.getPlaylists = function() {
     "use strict";
 
     this.youtube.playlists.list(
@@ -38,8 +38,6 @@ YoutubeAPI.prototype.getPlaylists() = function() {
                 console.log("error: " + err);
             }
             console.log(data);
-            console.log(response);
-
         }
     )
 };
