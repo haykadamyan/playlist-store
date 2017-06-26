@@ -1,7 +1,7 @@
 'use strict';
 
 const config = require('../../config/config');
-const passport = require('passport');
+const passport = require('./passport');
 const Router = require('koa-router');
 const userRoutes = require('../user');
 
@@ -35,7 +35,7 @@ router.get('/create-playlist', async function (ctx) {
 
 router.get('/auth/youtube',
   passport.authenticate('google',
-      {scope: config.google.scope, accessType: config.google.accessType, approvalPrompt: 'force'}
+      {scope: config.google.scope, accessType: config.google.accessType, approvalPrompt: config.google.approvalPrompt}
     )
 );
 

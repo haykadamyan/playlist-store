@@ -1,14 +1,13 @@
 'use strict';
 const passport = require('koa-passport');
-const GoogleStrategy = require('passport-google-auth').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const config = require('../../config/config');
 
 passport.use(new GoogleStrategy({
-        clientId: config.google.clientID,
+        clientID: config.google.clientID,
         clientSecret: config.google.clientSecret,
-        callbackURL: config.google.callbackURL,
-        scope: config.google.scope
-    },
+        callbackURL: config.google.callbackURL
+  },
     function(accessToken, refreshToken, params, profile, done) {
         const user = {
             id: profile.id,
@@ -16,7 +15,7 @@ passport.use(new GoogleStrategy({
             name: profile.name,
             gender: profile.gender,
             photos: profile.photos,
-            accesToken: accessToken,
+            accessToken: accessToken,
             refreshToken: refreshToken
         };
         console.log('Name : '+profile.displayName);
@@ -33,4 +32,4 @@ passport.deserializeUser(async function(user, done) {
     done(null, user);
 });
 
-module.export = passport;
+module.exports = passport;
