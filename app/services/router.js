@@ -4,6 +4,7 @@ const config = require('../../config/config');
 const passport = require('./passport');
 const Router = require('koa-router');
 const userRoutes = require('../user');
+const YoutubeAPI = require('./youtube');
 
 const router = new Router();
 
@@ -22,10 +23,13 @@ router.get('/payment', async function (ctx) {
 });
 
 router.get('/playlist', async function (ctx) {
+    const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+    youtubeAPI.getPlaylists();
   await ctx.render('playlist', {title: "Playlist page"});
 });
 
 router.get('/playlist-page', async function (ctx) {
+
   await ctx.render('playlist-page', {title: "Playlist page"});
 });
 
