@@ -23,17 +23,18 @@ router.get('/payment', async function (ctx) {
 });
 
 router.get('/playlist', async function (ctx) {
-    const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+  const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
     youtubeAPI.getPlaylists();
   await ctx.render('playlist', {title: "Playlist page"});
 });
 
 router.get('/playlist-page', async function (ctx) {
-
   await ctx.render('playlist-page', {title: "Playlist page"});
 });
 
 router.get('/create-playlist', async function (ctx) {
+  const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+  //youtubeAPI.createPlaylist(name);
   await ctx.render('create-playlist', {title: "Create playlist"});
 });
 
