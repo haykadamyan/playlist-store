@@ -24,16 +24,21 @@ router.get('/payment', async function (ctx) {
 
 router.get('/playlist', async function (ctx) {
     const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
-    youtubeAPI.getPlaylists();
-  await ctx.render('playlist', {title: "Playlist page"});
+    const playlists = await youtubeAPI.getPlaylists();
+    const myPlaylist = playlists.items[0];
+    const myPlaylistVids = await youtubeAPI.getPlaylistItems(myPlaylist.id);
+    await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylist, videos:myPlaylistVids.items });
 });
 
 router.get('/playlist-page', async function (ctx) {
-
+  const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+  const videoAdd = await youtubeAPI.addVideoToPlaylist('PL5Hd9Buq4RCHps1mN3je3VGiXAhQWDaRv', 'lAd0cgIiKpI');
   await ctx.render('playlist-page', {title: "Playlist page"});
 });
 
 router.get('/create-playlist', async function (ctx) {
+  const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+  const newPlaylist = await youtubeAPI.createPlaylist("Armen test");
   await ctx.render('create-playlist', {title: "Create playlist"});
 });
 
