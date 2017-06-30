@@ -32,7 +32,7 @@ router.get('/playlist', async function (ctx) {
 
 router.get('/playlist-page', async function (ctx) {
   const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
-  const videoAdd = await youtubeAPI.addVideoToPlaylist('PL5Hd9Buq4RCHps1mN3je3VGiXAhQWDaRv', 'lAd0cgIiKpI');
+  const videoAdd = await youtubeAPI.addVideoToPlaylist('PL5Hd9Buq4RCHps1mN3je3VGiXAhQWDaRv', 'EzfPo7LyDys');
   await ctx.render('playlist-page', {title: "Playlist page"});
 });
 
