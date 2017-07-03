@@ -5,10 +5,6 @@ const User = sequelize.define('users', {
   displayName: {
    type:Sequelize.STRING
   },
-  email: {
-    type: Sequelize.STRING,
-    unique: true
-  },
   accessToken: {
     type: Sequelize.STRING
   },
