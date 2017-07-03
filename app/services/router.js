@@ -5,6 +5,7 @@ const passport = require('./passport');
 const Router = require('koa-router');
 const userRoutes = require('../user');
 const YoutubeAPI = require('./youtube');
+const Playlists = require('../models/playlist');
 
 const router = new Router();
 
@@ -23,12 +24,12 @@ router.get('/payment', async function (ctx) {
 });
 
 router.get('/playlist', async function (ctx) {
-    const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
-    //const playlists = await Playlists.getMyPlaylists(ctx.state.user.accessToken, ctx.state.user.refreshToken);
-    const playlists = await youtubeAPI.getPlaylists();
-    const myPlaylist = playlists.items[0];
-    const myPlaylistVids = await youtubeAPI.getPlaylistItems(myPlaylist.id);
-    await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylist, videos:myPlaylistVids.items });
+    //const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+    const playlists = await Playlists(ctx.state.user);
+    //const playlists = await youtubeAPI.getPlaylists();
+    // const myPlaylist = playlists.items[0];
+    // const myPlaylistVids = await youtubeAPI.getPlaylistItems(myPlaylist.id);
+    await ctx.render('create-playlist', {title: "Playlist page", /*playlist: myPlaylist, videos:myPlaylistVids.items*/ });
 });
 
 router.get('/playlist-page', async function (ctx) {

@@ -22,7 +22,8 @@ passport.use(new GoogleStrategy({
 
         models.User.findOrCreate({where:{googleId: user.id}, defaults: {displayName: user.displayName, accessToken: accessToken, refreshToken: refreshToken, idToken: params.id_token, googleId: user.id}})
         .then(function(user){
-            return done(null, user);
+          console.log(user);
+          return done(null, user);
         });
         console.log('Name : '+profile.displayName);
     }
