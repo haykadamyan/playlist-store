@@ -1,4 +1,3 @@
-const config  = require('../../config/config');
 const google = require('googleapis');
 const promise = require('bluebird');
 

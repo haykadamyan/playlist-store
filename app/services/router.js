@@ -24,6 +24,7 @@ router.get('/payment', async function (ctx) {
 
 router.get('/playlist', async function (ctx) {
     const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+    //const playlists = await Playlists.getMyPlaylists(ctx.state.user.accessToken, ctx.state.user.refreshToken);
     const playlists = await youtubeAPI.getPlaylists();
     const myPlaylist = playlists.items[0];
     const myPlaylistVids = await youtubeAPI.getPlaylistItems(myPlaylist.id);
