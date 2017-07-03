@@ -1,5 +1,6 @@
 'use strict';
 const passport = require('koa-passport');
+const models = require('./models');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const config = require('../../config/config');
 
@@ -18,8 +19,12 @@ passport.use(new GoogleStrategy({
             accessToken: accessToken,
             refreshToken: refreshToken
         };
+
+        models.User.findOrCreate({where:{googleId: user.id}, defaults: {displayName: user.displayName, accessToken: accessToken, refreshToken: refreshToken, idToken: params.id_token, googleId: user.id}})
+        .then(function(user){
+            return done(null, user);
+        });
         console.log('Name : '+profile.displayName);
-        return done(null, user);
     }
     ));
 
