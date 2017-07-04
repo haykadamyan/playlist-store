@@ -9,11 +9,11 @@ module.exports = async function(user){
   const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, user.accessToken, user.refreshToken);
   const allPlaylists = await youtubeAPI.getPlaylists();
   console.log(allPlaylists);
-  const savedPlaylists = await Playlist.findAll(
-    {
-      where:{
-        ownerId: user.id
-      }
-    });
+  // const savedPlaylists = await Playlist.findAll(
+  //   {
+  //     where:{
+  //       ownerId: user.id
+  //     }
+  //   });
 
 };
