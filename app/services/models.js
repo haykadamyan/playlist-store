@@ -20,9 +20,14 @@ const User = sequelize.define('users', {
 });
 
 const Playlist = sequelize.define('playlists', {
+  youtubeId : Sequelize.INTEGER,
+  title: Sequelize.STRING,
+  description: Sequelize.TEXT,
   ownerId : Sequelize.INTEGER,
-  playlistName: Sequelize.STRING,
-  videos: Sequelize.TEXT
+  status: Sequelize.TEXT,
+  deleted: Sequelize.BOOLEAN,
+  videos: Sequelize.TEXT,
+  originalId: Sequelize.INTEGER
 });
 
 const Order = sequelize.define('orders', {
