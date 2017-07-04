@@ -32,13 +32,13 @@ YoutubeAPI.prototype.getPlaylists = function() {
         {
           part: 'id, snippet',
           mine: true,
+          maxResults:50
         },
         function (err, data, response){
           if (err) {
             console.log("error: " + err);
             return reject(err);
           }
-          console.log(data);
           return resolve(data);
         }
       );

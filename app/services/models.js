@@ -22,7 +22,7 @@ const User = sequelize.define('users', {
 
 const Playlist = sequelize.define('playlists', {
   youtubeId :{
-    type:Sequelize.INTEGER,
+    type:Sequelize.STRING,
     unique:true
   },
   title: Sequelize.STRING,
@@ -50,7 +50,7 @@ const Order = sequelize.define('orders', {
 
 
 User.sync();
-Playlist.sync();
+Playlist.sync({force:true});
 Order.sync();
 
 
