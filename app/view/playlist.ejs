@@ -28,15 +28,15 @@
             <%- include('header') %>
             <div class="content">
                 <h1>Playlists</h1>
+                <%= playlist.snippet.title %>
                 <div>
-                    <ul style="margin-right:1em;">
-                        <li>User 1</li>
-                        <li>User 2</li>
-                    </ul>
                     <ul>
-                        <li>Play list 1</li>
-                        <li>Play list 2</li>
+                        <% for(var i=0; i < videos.length;i++){ %>
+                            <li><%= videos[i].etag %></li>
+                        <%}%>
                     </ul>
+                            
+                    
                 </div>
             </div>
             <div class="footer">
