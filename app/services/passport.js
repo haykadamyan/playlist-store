@@ -20,12 +20,11 @@ passport.use(new GoogleStrategy({
             refreshToken: refreshToken
         };
 
-        models.User.findOrCreate({where:{googleId: user.id}, defaults: {displayName: user.displayName, accessToken: accessToken, refreshToken: refreshToken, idToken: params.id_token, googleId: user.id}})
-        .then(function(user){
-          console.log(user);
+        models.User.upsert({where:{googleId: user.id}, defaults: {displayName: user.displayName, accessToken: accessToken, refreshToken: refreshToken, idToken: params.id_token, googleId: user.id}})
+        .then(function(){
           return done(null, user);
         });
-        console.log('Name : '+profile.displayName);
+        console.log('Name : ' + profile.displayName);
     }
     ));
 
