@@ -25,25 +25,21 @@ router.get('/payment', async function (ctx) {
 });
 
 router.get('/playlist', async function (ctx) {
-  //const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
-  //const playlists = await Playlists(ctx.state.user);
-  //const playlists = await youtubeAPI.getPlaylists();
-  //const myPlaylist = playlists.items[0];
-  //const myPlaylistVids = await youtubeAPI.getPlaylistItems(myPlaylist.id);
 
   const playlistsArmen = Sync.playlists(ctx.state.user);
 
   const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
   const playlists = await youtubeAPI.getPlaylists();
-  let myPlaylist;
+  let myPlaylists = [];
   let myPlaylistVids = [];
   for (var a = 0; a < playlists.items.length; a++) {
-    myPlaylist = playlists.items[a];
-    myPlaylistVids.push(await youtubeAPI.getPlaylistItems(myPlaylist.id));
+    myPlaylists.push(playlists.items[a]);
+    myPlaylistVids.push(await youtubeAPI.getPlaylistItems(myPlaylists[myPlaylists.length - 1].id));
+    myPlaylistVids.push('end');
   }
-  console.log(myPlaylistVids);
-  await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylist, videos: myPlaylistVids});
+  await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylists, videos: myPlaylistVids});
 });
+
 
 router.get('/playlist-page', async function (ctx) {
   const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
@@ -53,6 +49,7 @@ router.get('/playlist-page', async function (ctx) {
 
 router.get('/create-playlist', async function (ctx) {
   const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+  //youtubeAPI.createPlaylist(name);
   const newPlaylist = await youtubeAPI.createPlaylist("Armen test");
   await ctx.render('create-playlist', {title: "Create playlist"});
 });

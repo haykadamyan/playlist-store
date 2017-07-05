@@ -1,14 +1,12 @@
 const google = require('googleapis');
 const promise = require('bluebird');
-
+var playlistId, channelId;
 let YoutubeAPI = function YoutubeAPI(clientID, secret, redirect, accessToken, refreshToken) {
     this.OAuth2Client = new google.auth.OAuth2(
         clientID,
         secret,
         redirect
     );
-
-    // this.OAuth2Client.setAccessType('offline');
 
     this.OAuth2Client.setCredentials({
         access_token: accessToken,
@@ -35,6 +33,9 @@ YoutubeAPI.prototype.getPlaylists = function() {
           maxResults: 50
         },
         function (err, data, response){
+            if (err) {
+                console.log("error: " + err);
+            }
           if (err) {
             console.log("error: " + err);
             return reject(err);
@@ -52,7 +53,7 @@ YoutubeAPI.prototype.getPlaylistItems = function(id){
     this.youtube.playlistItems.list({
         part:"snippet, contentDetails",
         playlistId:id,
-        
+        maxResults: 50
     },
     function (err, data, response){
       if (err) {
@@ -64,7 +65,33 @@ YoutubeAPI.prototype.getPlaylistItems = function(id){
     );
   });
 };
-
+YoutubeAPI.prototype.createPlaylist = function(titlePl){
+    this.request = this.youtube.playlists.insert({
+        part: 'snippet,status',
+        resource: {
+          snippet: {
+            title: titlePl,
+            description: 'A private playlist created with the YouTube API'
+          },
+          status: {
+            privacyStatus: 'private'
+          }
+        }
+    });
+    this.request.execute(function(response) {
+        this.result = response.result;
+        if (result) {
+          playlistId = result.id;
+          console.log(playlistId);
+          console.log(result.snippet.title);
+          console.log(result.snippet.description);
+        }
+        else
+        {
+            console.log('Could not create playlist');
+        }
+    });
+}; 
 
 YoutubeAPI.prototype.createPlaylist = function(title){
     "use strict";

@@ -28,16 +28,34 @@
             <%- include('header') %>
             <div class="content">
                 <h1>Playlists</h1>
-                <%= playlist.snippet.title %>
-                <div>
-                    <ul>
-                        <% for(var i=0; i < videos.length;i++){ %>
-                            <li><%= videos[i].etag %></li>
-                        <%}%>
-                    </ul>
-                            
-                    
-                </div>
+                <%for(var a=0; a < playlist.length;a++){ %>
+                    <h2><%= playlist[a].snippet.title %><h2>
+                    <% console.log(a); %>
+                    <div>
+                        <ul>
+                            <%
+                                for(var i=0; i < videos.length;i++){ 
+                                    if(videos[i] == 'end')
+                                    {
+                                        videos.splice(0, i+1);
+                                        break;
+                                    }
+                                    console.log(videos[i].items);
+                                    for(var j = 0; j < videos[i].items.length; j++)
+                                    {
+                            %>
+                                <li>
+                                    <h3><%= videos[i].items[j].snippet.title %></h3>
+                                    <iframe width="854" height="480" src="https://www.youtube.com/embed/<% videos[i].items[j].contentDetails.videoId %>" frameborder="0" allowfullscreen></iframe>
+                                    <!--  <p><%= videos[i].items[j].snippet.description %></p>-->
+                                </li>
+                            <%
+                                    }
+                                }
+                            %>
+                        </ul>        
+                    </div>
+                <%}%>    
             </div>
             <div class="footer">
                 <p class="footerP">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
