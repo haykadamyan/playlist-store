@@ -3,12 +3,13 @@
 const config = require('../../config/config');
 const passport = require('./passport');
 const Router = require('koa-router');
-const userRoutes = require('../user');
 const YoutubeAPI = require('./youtube');
-const Playlists = require('../models/playlist');
 const Sync = require('./sync');
+const models = require('./models');
 
 const router = new Router();
+const Playlist = models.Playlist;
+
 
 const payment = {
   seller: "Bobo",
@@ -17,7 +18,9 @@ const payment = {
 };
 
 router.get('/', async function (ctx) {
-  await ctx.render('main');
+  await Sync.playlists(ctx.state.user)
+  const playlists = await Playlist.findAll();
+  await ctx.render('main', {title: "Playlist Store", playlists: playlists});
 });
 
 router.get('/payment', async function (ctx) {
@@ -62,7 +65,7 @@ router.get('/auth/youtube',
 
 router.get('/auth/youtube/callback',
   passport.authenticate('google',
-    {successRedirect: '/playlist', failureRedirect: '/'}
+    {successRedirect: '/', failureRedirect: '/armen'}
   )
 );
 
