@@ -31,10 +31,18 @@ router.get('/playlist', async function (ctx) {
   //const myPlaylist = playlists.items[0];
   //const myPlaylistVids = await youtubeAPI.getPlaylistItems(myPlaylist.id);
 
-  const playlists = Sync.playlists(ctx.state.user);
+  const playlistsArmen = Sync.playlists(ctx.state.user);
 
-
-  await ctx.render('create-playlist', {title: "Playlist page", /*playlist: myPlaylist, videos:myPlaylistVids.items*/});
+  const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+  const playlists = await youtubeAPI.getPlaylists();
+  let myPlaylist;
+  let myPlaylistVids = [];
+  for (var a = 0; a < playlists.items.length; a++) {
+    myPlaylist = playlists.items[a];
+    myPlaylistVids.push(await youtubeAPI.getPlaylistItems(myPlaylist.id));
+  }
+  console.log(myPlaylistVids);
+  await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylist, videos: myPlaylistVids});
 });
 
 router.get('/playlist-page', async function (ctx) {

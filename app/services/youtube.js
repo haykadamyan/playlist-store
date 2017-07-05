@@ -32,7 +32,7 @@ YoutubeAPI.prototype.getPlaylists = function() {
         {
           part: 'id, snippet',
           mine: true,
-          maxResults:50
+          maxResults: 50
         },
         function (err, data, response){
           if (err) {
@@ -51,14 +51,14 @@ YoutubeAPI.prototype.getPlaylistItems = function(id){
   return new Promise((resolve, reject)=>{
     this.youtube.playlistItems.list({
         part:"snippet, contentDetails",
-        playlistId:id
+        playlistId:id,
+        
     },
     function (err, data, response){
       if (err) {
         console.log("error: " + err);
         return reject(err);
       }
-      console.log(data);
       return resolve(data);
     }
     );
