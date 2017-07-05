@@ -18,8 +18,10 @@ const payment = {
 };
 
 router.get('/', async function (ctx) {
-  await Sync.playlists(ctx.state.user)
+  await Sync.playlists(ctx.state.user);
+
   const playlists = await Playlist.findAll();
+  playlists[0].get('title');
   await ctx.render('main', {title: "Playlist Store", playlists: playlists});
 });
 
@@ -68,6 +70,14 @@ router.get('/auth/youtube/callback',
     {successRedirect: '/', failureRedirect: '/armen'}
   )
 );
+
+
+router.get('/playlist/sell/:id', async function(ctx){
+  console.log(typeof parseInt(ctx.params.id));
+  const playlist = await Playlist.findById(parseInt(ctx.params.id));
+  const update = await playlist.update({status:"for sale"});
+  console.log(update);
+});
 
 router.use(async function (ctx, next) {
   if (ctx.isAuthenticated()) {
