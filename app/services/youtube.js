@@ -33,18 +33,14 @@ YoutubeAPI.prototype.getPlaylists = function() {
           maxResults: 50
         },
         function (err, data, response){
-<<<<<<< HEAD
             if (err) {
                 console.log("error: " + err);
             }
-            console.log(data.items[0]);
-=======
           if (err) {
             console.log("error: " + err);
             return reject(err);
           }
           return resolve(data);
->>>>>>> 1be39b0e76f71fea91f47e4ba0ccfb7a17c51e4d
         }
       );
     });
@@ -57,7 +53,7 @@ YoutubeAPI.prototype.getPlaylistItems = function(id){
     this.youtube.playlistItems.list({
         part:"snippet, contentDetails",
         playlistId:id,
-        
+        maxResults: 50
     },
     function (err, data, response){
       if (err) {
@@ -89,8 +85,6 @@ YoutubeAPI.prototype.createPlaylist = function(titlePl){
           console.log(playlistId);
           console.log(result.snippet.title);
           console.log(result.snippet.description);
-
-<<<<<<< HEAD
         }
         else
         {
@@ -98,7 +92,6 @@ YoutubeAPI.prototype.createPlaylist = function(titlePl){
         }
     });
 }; 
-=======
 
 YoutubeAPI.prototype.createPlaylist = function(title){
     "use strict";
@@ -150,5 +143,4 @@ YoutubeAPI.prototype.addVideoToPlaylist = function(playlistId, videoId){
 };
 
 
->>>>>>> 1be39b0e76f71fea91f47e4ba0ccfb7a17c51e4d
 module.exports = YoutubeAPI;
