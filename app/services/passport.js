@@ -29,11 +29,15 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser(function (user, done) {
-  done(null, user);
+  done(null, user.googleId);
 });
 
-passport.deserializeUser(async function (user, done) {
-  done(null, user);
+passport.deserializeUser(async function (googleId, done) {
+  models.User.findOne({where: {googleId: googleId}}).then((user) => {
+    done(null, user);
+  }).catch((err) => {
+    done(err, null);
+  })
 });
 
 module.exports = passport;
