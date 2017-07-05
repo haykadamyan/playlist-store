@@ -46,7 +46,7 @@
                             %>
                                 <li>
                                     <h3><%= videos[i].items[j].snippet.title %></h3>
-                                    <iframe width="854" height="480" src="https://www.youtube.com/embed/<% videos[i].items[j].contentDetails.videoId %>" frameborder="0" allowfullscreen></iframe>
+                                    <iframe width="854" height="480" src="https://www.youtube.com/embed/<%= videos[i].items[j].contentDetails.videoId %>" frameborder="0" allowfullscreen></iframe>
                                     <!--  <p><%= videos[i].items[j].snippet.description %></p>-->
                                 </li>
                             <%
