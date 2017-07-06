@@ -15,7 +15,9 @@
                             if(playlists[a].dataValues.status == 'youtube')
                             {
                                 %> 
-                                    <li><%= playlists[a].dataValues.title %><br><button id = "<%= playlists[a].dataValues.id %>">Sell</button></li>
+                                    <li><%= playlists[a].dataValues.title %>
+                                    <button class="sellButton" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
+                                    </li>
                                 <%
                             }
                             else if(playlists[a].dataValues.status == 'for sale')

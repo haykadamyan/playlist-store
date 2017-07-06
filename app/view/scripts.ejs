@@ -3,13 +3,15 @@
 <script>
 	
 $(document).ready(function(){
-
-	cellButton = $("#sellPlaylist");
-	cellButton.click(function(){
-		//$(this).attr('data-id');
-		$.get( "/playlist/sell/" + $(this).data('id')).then(function(data){
-			alert("Success");
-		});
+	sellButton = $("#sellPlaylist");
+	
+	$('.sellButton').click(function(){
+		$.get( "/playlist/sell/" + $(this).data('id')).then(function(data) {
+			this.parent().append('<span class="forSale"> For sale </span>');
+			this.remove()			
+		}).catch(function(err) {
+      console.log(err.statusText);
+    });
 	})
 })
 
