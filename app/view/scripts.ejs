@@ -1,0 +1,18 @@
+<script src="/js/jquery-3.2.1.min.js"></script>
+<button id = "sellPlaylist">I want to buy this playlist, not that, imenno this. Click Me!!!</button>
+<script>
+	
+$(document).ready(function(){
+	sellButton = $("#sellPlaylist");
+	
+	$('.sellButton').click(function(){
+		$.get( "/playlist/sell/" + $(this).data('id')).then(function(data) {
+			this.parent().append('<span class="forSale"> For sale </span>');
+			this.remove()			
+		}).catch(function(err) {
+      console.log(err.statusText);
+    });
+	})
+})
+
+</script>

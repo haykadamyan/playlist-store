@@ -20,8 +20,7 @@ router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
 
   const playlists = await Playlist.findAll();
-  playlists[0].get('title');
-  await ctx.render('main', {title: "Playlist Store", playlists: playlists});
+    await ctx.render('main', {title: "Playlist Store", playlists: playlists});
 });
 
 router.get('/payment', async function (ctx) {
