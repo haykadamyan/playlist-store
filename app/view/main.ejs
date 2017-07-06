@@ -5,36 +5,35 @@
     <body>
     <%- include('header') %>
         <h1>Main Page</h1>
+
         <table>
             <tr>
                 <td>
-                    <h2>Purchases</h2>
                     <ul>
-                    <li>Playlist 1</li>
-                    <li>Playlist 2</li>
-                    <li>Playlist 3</li>
-                    <li>Playlist 4</li>
+                        <% 
+                            for(var a = 0; a < playlists.length; a++){ 
+                            if(playlists[a].dataValues.status == 'youtube')
+                            {
+                                %> 
+                                    <li><%= playlists[a].dataValues.title %><br><button id = "<%= playlists[a].dataValues.id %>">Sell</button></li>
+                                <%
+                            }
+                            else if(playlists[a].dataValues.status == 'for sale')
+                            {
+                                %> 
+                                    <li><%= playlists[a].dataValues.title %></li>
+                                <%
+                            }
+                            else if(playlists[a].dataValues.status == 'purchaised')
+                            {
+                                %> 
+                                    <li><%= playlists[a].dataValues.title %></li>
+                                <%
+                            }
+                        %>
+                        <% } %>
                     </ul>
-                <td>
-                <td>
-                    <h2>Selling</h2>
-                    <ul>
-                    <li>Playlist 1</li>
-                    <li>Playlist 2</li>
-                    <li>Playlist 3</li>
-                    <li>Playlist 4</li>
-                    </ul>
-                <td>
-                <td>
-                    <h2>Top 10 Playlists</h2>
-                    <ul>
-                    <li>Playlist 1</li>
-                    <li>Playlist 2</li>
-                    <li>Playlist 3</li>
-                    <li>Playlist 4</li>
-                    </ul>
-                <td>
-            </tr>
+                </td>
         </table>
     <%- include('scripts') %>
     </body>

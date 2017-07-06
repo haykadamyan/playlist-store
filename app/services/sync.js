@@ -14,7 +14,7 @@ exports.playlists = async function(user){
 
     let item = youtubePlaylists.items[i];
 
-    console.log(item);
+    //console.log(item);
     let playlist = {
       youtubeId: item.id,
       title: item.snippet.title,
