@@ -1,0 +1,16 @@
+<script src="/js/jquery-3.2.1.min.js"></script>
+<button id = "sellPlaylist">I want to buy this playlist, not that, imenno this. Click Me!!!</button>
+<script>
+	
+$(document).ready(function(){
+
+	cellButton = $("#sellPlaylist");
+	cellButton.click(function(){
+		//$(this).attr('data-id');
+		$.get( "/playlist/sell/" + $(this).data('id')).then(function(data){
+			alert("Success");
+		});
+	})
+})
+
+</script>
