@@ -32,12 +32,15 @@ passport.serializeUser(function (user, done) {
   done(null, user.googleId);
 });
 
-passport.deserializeUser(async function (googleId, done) {
-  const user = await models.User.findOne({where: {googleId: googleId}});
+passport.deserializeUser(async function (id, done) {
+  try {
+    const user = await models.User.findOne({where: {googleId: id}});
 
-  done(null, user);
-  
-  //done(err, null);
+    done(null, user);
+  } catch(err){
+    done(err, null);
+  }
+
 });
 
 module.exports = passport;

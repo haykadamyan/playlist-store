@@ -50,7 +50,7 @@ const Order = sequelize.define('orders', {
 
 
 User.sync();
-Playlist.sync({force:true});
+Playlist.sync();
 Order.sync();
 
 
