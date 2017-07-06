@@ -21,14 +21,16 @@ server
   .use(session(server))
   .use(passport.initialize())
   .use(passport.session())
-  .use(function(ctx, next) {
+  .use(async function(ctx, next) {
+
     if(ctx.isAuthenticated()) {
-      ctx.state.youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
+      console.log('armen armen');
+      ctx.state.youtubeAPI = await new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
     }
     // else {
     //   ctx.redirect('/');
     // }
-    next();
+    await next();
   })
   .use(router.routes())
   .use(router.allowedMethods());
