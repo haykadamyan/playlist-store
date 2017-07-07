@@ -8,6 +8,7 @@ const models = require('./models');
 
 const router = new Router();
 const Playlist = models.Playlist;
+const Sale = models.Sale;
 
 
 const payment = {
@@ -75,23 +76,24 @@ router.get('/playlist/sell/:id', async function(ctx){
     ctx.response.status = 403;
     ctx.response.body = {status: 'failed', err: "It's not your playlist"};
   }
-
-
+  
 
   const videos = await ctx.state.youtubeAPI.getPlaylistItems(playlist.get('youtubeId'));
-  console.log(videos);
+
   const videoIds = videos.items.map((item)=>{
-    console.log(item);
     return item.contentDetails.videoId;
   });
+
   const json = JSON.stringify(videoIds);
 
-  const update = await playlist.update({status:"for sale", videos:json});
+  await playlist.update({status:"for sale", videos:json});
 
-  // TODO: get videos from youtube
-  // TODO: Add record in sales table
-  // TODO: Return response with a message
-  //console.log(update);
+  await Sale.upsert({playlistId: id});
+
+
+  ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
+
+
 });
 
 // TODO: Buy - add record in orders, create playlist (here and in youtube), export videos
