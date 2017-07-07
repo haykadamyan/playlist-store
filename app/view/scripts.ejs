@@ -4,15 +4,25 @@
 	
 $(document).ready(function(){
 	sellButton = $("#sellPlaylist");
-	
 	$('.sellButton').click(function(){
-		$.get( "/playlist/sell/" + $(this).data('id')).then(function(data) {
+		$.get( "/playlist/sell/" + $(this).data('id')).then(function() {
 			this.parent().append('<span class="forSale"> For sale </span>');
-			this.remove()			
+			this.remove();
 		}).catch(function(err) {
-      console.log(err.statusText);
-    });
-	})
-})
+			console.log('work');			
+	    	console.log(err.statusText);
+	    });
+	});
+
+	$('.buyButton').click(function(){
+		$.get( "/playlist/buy/" + JSON.stringify($(this).data('id'))).then(function() {
+			this.parent().append('<span class="forSale"> For sale </span>');
+			this.remove();
+		}).catch(function(err) {
+			console.log('work');			
+	    	console.log(err.statusText);
+	    });
+	});
+});
 
 </script>
