@@ -48,11 +48,23 @@ const Order = sequelize.define('orders', {
   playlistId: Sequelize.INTEGER
 });
 
+const Sale = sequelize.define('sales', {
+  playlistId: {
+    type: Sequelize.INTEGER
+  }
+},
+  {
+    indexes: [{
+      unique: true,
+      fields: ['playlistId']
+    }]
+});
 
 User.sync();
 Playlist.sync();
 Order.sync();
+Sale.sync({force:true});
 
 
-module.exports = {User, Playlist, Order};
+module.exports = {User, Playlist, Order, Sale};
 
