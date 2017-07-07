@@ -22,6 +22,8 @@ router.get('/', async function (ctx) {
   const playlists = await Playlist.findAll({where:{ownerId: ctx.state.user.dataValues.id}});
   const sellPlaylists = await Playlist.findAll({where:{status:"for sale"}});
   const purchasedVid = await models.Order.findAll({where:{userId:ctx.state.user.dataValues.id}});
+  console.log('this is purchased');
+  console.log(purchasedVid);
   await ctx.render('main', {title: "Playlist Store", playlists: playlists, sell:sellPlaylists, userId:ctx.state.user.dataValues.id, purchased: purchasedVid});
 });
 
@@ -93,8 +95,8 @@ router.get('/playlist/sell/:id', async function(ctx){
   //console.log(update);
 });
 router.get('/playlist/buy/:id', async function(ctx){
-  const id = parseInt(ctx.params.id);
-  const infoPlaylist = await  Playlist.findOne({where:{id: id}});
+  const playlistId = parseInt(ctx.params.id);
+  let infoPlaylist = await  Playlist.findOne({where:{id: playlistId}});
   console.log('info');
   console.log(infoPlaylist);
   let playlist = {
