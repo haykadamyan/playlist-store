@@ -7,14 +7,14 @@ $(document).ready(function(){
     }).catch(function(err) {
       console.log(err);
     });
-  })
+  });
 
   $('.buyButton').click(function(){
-    $.get( "/playlist/buy/" + JSON.stringify($(this).data('id'))).then(() => {
-      $(this).parent().append('<span class="forSale"> For sale </span>');
+    $.get( "/playlist/buy/" + $(this).data('id')).then(() => {
+      $(this).parent().append('<span class="purchased"> Purchased </span>');
       $(this).remove();
     }).catch(function(err) {
-      console.log('work');
+      console.log('Error buying playlist');
       console.log(err.statusText);
     });
   });
