@@ -6,12 +6,13 @@ $(document).ready(function(){
 	sellButton = $("#sellPlaylist");
 	
 	$('.sellButton').click(function(){
-		$.get( "/playlist/sell/" + $(this).data('id')).then(function(data) {
-			this.parent().append('<span class="forSale"> For sale </span>');
-			this.remove()			
+		$.get( "/playlist/sell/" + $(this).data('id')).then((data) => {
+			$(this).parent().append('<span class="forSale"> For sale </span>');
+            $(this).remove();
+			console.log(data);
 		}).catch(function(err) {
-      console.log(err.statusText);
-    });
+          console.log(err);
+        });
 	})
 })
 
