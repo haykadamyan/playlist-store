@@ -19,12 +19,11 @@ const payment = {
 
 router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
-  console.log(ctx.state.user);
+
   const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.dataValues.id}});
   const sellPlaylists = await Playlist.findAll({where: {status: "for sale"}});
   const purchasedVid = await models.Order.findAll({where: {userId: ctx.state.user.dataValues.id}});
-  console.log('this is purchased');
-  console.log(purchasedVid);
+
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
@@ -101,16 +100,21 @@ router.get('/playlist/sell/:id', async function (ctx) {
 
 router.get('/playlist/buy/:id', async function (ctx) {
   const playlistId = parseInt(ctx.params.id);
-  let infoPlaylist = await  Playlist.findOne({where: {id: playlistId}});
-  console.log(infoPlaylist);
+  let infoPlaylist = await Playlist.findById(playlistId);
+
   let playlist = {
     userId: infoPlaylist.dataValues.ownerId,
     playlistId: infoPlaylist.dataValues.id
   };
+
   await models.Order.upsert(playlist);
+
+  ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
+  // TODO: create playlist in DB (set original ID)
+  // TODO: create playlist in youtube
+  // TODO: export videos
 });
 
-// TODO: Buy - add record in orders, create playlist (here and in youtube), export videos
 
 // TODO: LIST playlists for sale
 
