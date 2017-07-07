@@ -19,26 +19,10 @@ const payment = {
 
 router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
-<<<<<<< HEAD
   const playlists = await Playlist.findAll({where:{ownerId: ctx.state.user.dataValues.id}});
   const sellPlaylists = await Playlist.findAll({where:{status:"for sale"}});
   const purchasedVid = await models.Order.findAll({where:{userId:ctx.state.user.dataValues.id}});
   await ctx.render('main', {title: "Playlist Store", playlists: playlists, sell:sellPlaylists, userId:ctx.state.user.dataValues.id, purchased: purchasedVid});
-=======
-  console.log(ctx.state.user);
-  const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.dataValues.id}});
-  const sellPlaylists = await Playlist.findAll({where: {status: "for sale"}});
-  const purchasedVid = await models.Order.findAll({where: {userId: ctx.state.user.dataValues.id}});
-  console.log('this is purchased');
-  console.log(purchasedVid);
-  await ctx.render('main', {
-    title: "Playlist Store",
-    playlists: playlists,
-    sell: sellPlaylists,
-    userId: ctx.state.user.dataValues.id,
-    purchased: purchasedVid
-  });
->>>>>>> e08a76a867bc1c56940b42e840126fdde5ce74c8
 });
 
 router.get('/payment', async function (ctx) {
@@ -108,20 +92,12 @@ router.get('/playlist/sell/:id', async function (ctx) {
 
 router.get('/playlist/buy/:id', async function (ctx) {
   const playlistId = parseInt(ctx.params.id);
-<<<<<<< HEAD
   let infoPlaylist = await  Playlist.findOne({where:{id: playlistId}});
   let plainPlaylist = infoPlaylist.get({plain:true});
   let playlist = {
       userId: plainPlaylist.ownerId,
       playlistId: plainPlaylist.id,
       playlistTitle: plainPlaylist.title
-=======
-  let infoPlaylist = await  Playlist.findOne({where: {id: playlistId}});
-  console.log(infoPlaylist);
-  let playlist = {
-    userId: infoPlaylist.dataValues.ownerId,
-    playlistId: infoPlaylist.dataValues.id
->>>>>>> e08a76a867bc1c56940b42e840126fdde5ce74c8
   };
   await models.Order.upsert(playlist);
 });
