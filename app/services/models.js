@@ -44,8 +44,8 @@ const Playlist = sequelize.define('playlists', {
 });
 
 const Order = sequelize.define('orders', {
-  userId:Sequelize.INTEGER,
-  playlistId: Sequelize.STRING
+  userId: {type: Sequelize.INTEGER, unique: 'order'},
+  playlistId: {type: Sequelize.STRING, unique: 'order'}
 });
 
 const Sale = sequelize.define('sales', {
@@ -63,7 +63,7 @@ const Sale = sequelize.define('sales', {
 User.sync();
 Playlist.sync();
 Order.sync();
-Sale.sync({force:true});
+Sale.sync();
 
 
 module.exports = {User, Playlist, Order, Sale};

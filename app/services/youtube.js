@@ -84,7 +84,6 @@ YoutubeAPI.prototype.createPlaylist = function (title, description) {
           console.log("error: " + err);
           return reject(err);
         }
-        console.log(data);
         return resolve(data);
       });
   });
@@ -110,7 +109,6 @@ YoutubeAPI.prototype.addVideoToPlaylist = function (playlistId, videoId) {
         console.log("error: " + err);
         return reject(err);
       }
-      console.log(data);
       return resolve(data);
     });
   });

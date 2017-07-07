@@ -19,10 +19,25 @@ const payment = {
 
 router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
+<<<<<<< HEAD
   const playlists = await Playlist.findAll({where:{ownerId: ctx.state.user.dataValues.id}});
   const sellPlaylists = await Playlist.findAll({where:{status:"for sale"}});
   const purchasedVid = await models.Order.findAll({where:{userId:ctx.state.user.dataValues.id}});
   await ctx.render('main', {title: "Playlist Store", playlists: playlists, sell:sellPlaylists, userId:ctx.state.user.dataValues.id, purchased: purchasedVid});
+=======
+
+  const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.dataValues.id}});
+  const sellPlaylists = await Playlist.findAll({where: {status: "for sale"}});
+  const purchasedVid = await models.Order.findAll({where: {userId: ctx.state.user.dataValues.id}});
+
+  await ctx.render('main', {
+    title: "Playlist Store",
+    playlists: playlists,
+    sell: sellPlaylists,
+    userId: ctx.state.user.dataValues.id,
+    purchased: purchasedVid
+  });
+>>>>>>> 335c4fa3eb11fa53ee9d6de74b255cccaddaf012
 });
 
 router.get('/payment', async function (ctx) {
@@ -92,17 +107,27 @@ router.get('/playlist/sell/:id', async function (ctx) {
 
 router.get('/playlist/buy/:id', async function (ctx) {
   const playlistId = parseInt(ctx.params.id);
+<<<<<<< HEAD
   let infoPlaylist = await  Playlist.findOne({where:{id: playlistId}});
   let plainPlaylist = infoPlaylist.get({plain:true});
+=======
+  let infoPlaylist = await Playlist.findById(playlistId);
+
+>>>>>>> 335c4fa3eb11fa53ee9d6de74b255cccaddaf012
   let playlist = {
       userId: plainPlaylist.ownerId,
       playlistId: plainPlaylist.id,
       playlistTitle: plainPlaylist.title
   };
+
   await models.Order.upsert(playlist);
+
+  ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
+  // TODO: create playlist in DB (set original ID)
+  // TODO: create playlist in youtube
+  // TODO: export videos
 });
 
-// TODO: Buy - add record in orders, create playlist (here and in youtube), export videos
 
 // TODO: LIST playlists for sale
 

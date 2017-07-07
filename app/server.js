@@ -24,7 +24,6 @@ server
   .use(async function(ctx, next) {
 
     if(ctx.isAuthenticated()) {
-      console.log('armen armen');
       ctx.state.youtubeAPI = await new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, ctx.state.user.accessToken, ctx.state.user.refreshToken);
     }
     // else {
