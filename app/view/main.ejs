@@ -14,9 +14,10 @@
                             for(var a = 0; a < playlists.length; a++){ 
                             if(playlists[a].dataValues.status == 'youtube')
                             {
-                                %> 
-                                    <li><%= playlists[a].dataValues.title %>
-                                    <button class="sellButton" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
+                                %>
+                                    <li>
+                                        <%= playlists[a].dataValues.title %>
+                                        <button class="sellButton" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
                                     </li>
                                 <%
                             }
