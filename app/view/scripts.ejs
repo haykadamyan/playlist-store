@@ -1,23 +1,21 @@
 <script src="/js/jquery-3.2.1.min.js"></script>
-<button id = "sellPlaylist">I want to buy this playlist, not that, imenno this. Click Me!!!</button>
 <script>
 	
 $(document).ready(function(){
-	sellButton = $("#sellPlaylist");
 	$('.sellButton').click(function(){
-		$.get( "/playlist/sell/" + $(this).data('id')).then(function() {
-			this.parent().append('<span class="forSale"> For sale </span>');
-			this.remove();
+		$.get( "/playlist/sell/" + $(this).data('id')).then((data) => {
+			$(this).parent().append('<span class="forSale"> For sale </span>');
+            $(this).remove();
+			console.log(data);
 		}).catch(function(err) {
-			console.log('work');			
-	    	console.log(err.statusText);
-	    });
-	});
+          console.log(err);
+        });
+	})
 
 	$('.buyButton').click(function(){
-		$.get( "/playlist/buy/" + JSON.stringify($(this).data('id'))).then(function() {
-			this.parent().append('<span class="forSale"> For sale </span>');
-			this.remove();
+		$.get( "/playlist/buy/" + JSON.stringify($(this).data('id'))).then(() => {
+          $(this).parent().append('<span class="forSale"> For sale </span>');
+          $(this).remove();
 		}).catch(function(err) {
 			console.log('work');			
 	    	console.log(err.statusText);
