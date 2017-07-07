@@ -18,12 +18,9 @@ const payment = {
 
 router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
-  console.log(ctx.state.user);
   const playlists = await Playlist.findAll({where:{ownerId: ctx.state.user.dataValues.id}});
   const sellPlaylists = await Playlist.findAll({where:{status:"for sale"}});
   const purchasedVid = await models.Order.findAll({where:{userId:ctx.state.user.dataValues.id}});
-  console.log('this is purchased');
-  console.log(purchasedVid);
   await ctx.render('main', {title: "Playlist Store", playlists: playlists, sell:sellPlaylists, userId:ctx.state.user.dataValues.id, purchased: purchasedVid});
 });
 
@@ -97,12 +94,11 @@ router.get('/playlist/sell/:id', async function(ctx){
 router.get('/playlist/buy/:id', async function(ctx){
   const playlistId = parseInt(ctx.params.id);
   let infoPlaylist = await  Playlist.findOne({where:{id: playlistId}});
-  console.log('info');
-  console.log(infoPlaylist);
+  let plainPlaylist = infoPlaylist.get({plain:true});
   let playlist = {
-      userId: infoPlaylist.dataValues.ownerId,
-      playlistId: infoPlaylist.dataValues.id,
-      playlistTitle: infoPlaylist.dataValues.title
+      userId: plainPlaylist.ownerId,
+      playlistId: plainPlaylist.id,
+      playlistTitle: plainPlaylist.title
   };
   await models.Order.upsert(playlist);
 });
