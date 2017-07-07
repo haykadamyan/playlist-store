@@ -45,7 +45,7 @@ const Playlist = sequelize.define('playlists', {
 
 const Order = sequelize.define('orders', {
   userId:Sequelize.INTEGER,
-  playlistId: Sequelize.INTEGER
+  playlistId: Sequelize.STRING
 });
 
 const Sale = sequelize.define('sales', {

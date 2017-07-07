@@ -19,9 +19,19 @@ const payment = {
 
 router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
-
-  const playlists = await Playlist.findAll();
-    await ctx.render('main', {title: "Playlist Store", playlists: playlists});
+  console.log(ctx.state.user);
+  const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.dataValues.id}});
+  const sellPlaylists = await Playlist.findAll({where: {status: "for sale"}});
+  const purchasedVid = await models.Order.findAll({where: {userId: ctx.state.user.dataValues.id}});
+  console.log('this is purchased');
+  console.log(purchasedVid);
+  await ctx.render('main', {
+    title: "Playlist Store",
+    playlists: playlists,
+    sell: sellPlaylists,
+    userId: ctx.state.user.dataValues.id,
+    purchased: purchasedVid
+  });
 });
 
 router.get('/payment', async function (ctx) {
@@ -67,33 +77,37 @@ router.get('/auth/youtube/callback',
   )
 );
 
-
-router.get('/playlist/sell/:id', async function(ctx){
+router.get('/playlist/sell/:id', async function (ctx) {
   const id = parseInt(ctx.params.id);
   const playlist = await Playlist.findById(id);
-
-  if(playlist.get('ownerId') !== ctx.state.user.id){
+  if (playlist.get('ownerId') !== ctx.state.user.id) {
     ctx.response.status = 403;
     ctx.response.body = {status: 'failed', err: "It's not your playlist"};
   }
-  
 
   const videos = await ctx.state.youtubeAPI.getPlaylistItems(playlist.get('youtubeId'));
-
-  const videoIds = videos.items.map((item)=>{
+  const videoIds = videos.items.map((item) => {
     return item.contentDetails.videoId;
   });
 
   const json = JSON.stringify(videoIds);
 
-  await playlist.update({status:"for sale", videos:json});
+  await playlist.update({status: "for sale", videos: json});
 
   await Sale.upsert({playlistId: id});
 
-
   ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
+});
 
-
+router.get('/playlist/buy/:id', async function (ctx) {
+  const playlistId = parseInt(ctx.params.id);
+  let infoPlaylist = await  Playlist.findOne({where: {id: playlistId}});
+  console.log(infoPlaylist);
+  let playlist = {
+    userId: infoPlaylist.dataValues.ownerId,
+    playlistId: infoPlaylist.dataValues.id
+  };
+  await models.Order.upsert(playlist);
 });
 
 // TODO: Buy - add record in orders, create playlist (here and in youtube), export videos
