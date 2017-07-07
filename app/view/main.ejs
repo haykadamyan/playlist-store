@@ -24,19 +24,29 @@
                             else if(playlists[a].dataValues.status == 'for sale')
                             {
                                 %> 
-                                    <li><%= playlists[a].dataValues.title %></li>
-                                <%
-                            }
-                            else if(playlists[a].dataValues.status == 'purchaised')
-                            {
-                                %> 
-                                    <li><%= playlists[a].dataValues.title %></li>
+                                    <li><%= playlists[a].dataValues.title %><span class="forSale"> For sale </span></li>
                                 <%
                             }
                         %>
                         <% } %>
+                        <% console.log(purchased); %>
+                        <% for(var a = 0; a < purchased.length; a++){ %>
+                            <li><%= purchased[a].dataValues.playlistTitle %><span>Purchased</span></li>
+                        <% } %> 
                     </ul>
                 </td>
+                <td>
+                    <ul>
+                        <h2>Store</h2>
+                        <% 
+                            for(var a = 0; a < sell.length; a++){
+                                sell[a].dataValues.userId = userId;
+                        %>
+                            <li><%= sell[a].dataValues.title+' ' %><button data-id='<%= sell[a].dataValues.id %>' class="buyButton">buy</button></li>
+                        <%  } %>
+                    </ul>
+                </td>
+            </tr>
         </table>
     <%- include('scripts') %>
     </body>

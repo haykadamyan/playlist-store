@@ -18,9 +18,11 @@ const payment = {
 
 router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
-
-  const playlists = await Playlist.findAll();
-    await ctx.render('main', {title: "Playlist Store", playlists: playlists});
+  console.log(ctx.state.user);
+  const playlists = await Playlist.findAll({where:{ownerId: ctx.state.user.dataValues.id}});
+  const sellPlaylists = await Playlist.findAll({where:{status:"for sale"}});
+  const purchasedVid = await models.Order.findAll({where:{userId:ctx.state.user.dataValues.id}});
+  await ctx.render('main', {title: "Playlist Store", playlists: playlists, sell:sellPlaylists, userId:ctx.state.user.dataValues.id, purchased: purchasedVid});
 });
 
 router.get('/payment', async function (ctx) {
@@ -70,7 +72,6 @@ router.get('/auth/youtube/callback',
 router.get('/playlist/sell/:id', async function(ctx){
   const id = parseInt(ctx.params.id);
   const playlist = await Playlist.findById(id);
-
   if(playlist.get('ownerId') !== ctx.state.user.id){
     ctx.response.status = 403;
     ctx.response.body = {status: 'failed', err: "It's not your playlist"};
@@ -79,9 +80,7 @@ router.get('/playlist/sell/:id', async function(ctx){
 
 
   const videos = await ctx.state.youtubeAPI.getPlaylistItems(playlist.get('youtubeId'));
-  console.log(videos);
   const videoIds = videos.items.map((item)=>{
-    console.log(item);
     return item.contentDetails.videoId;
   });
   const json = JSON.stringify(videoIds);
@@ -93,7 +92,18 @@ router.get('/playlist/sell/:id', async function(ctx){
   // TODO: Return response with a message
   //console.log(update);
 });
-
+router.get('/playlist/buy/:id', async function(ctx){
+  const id = parseInt(ctx.params.id);
+  const infoPlaylist = await  Playlist.findOne({where:{id: id}});
+  console.log('info');
+  console.log(infoPlaylist);
+  let playlist = {
+      userId: infoPlaylist.dataValues.ownerId,
+      playlistId: infoPlaylist.dataValues.id,
+      playlistTitle: infoPlaylist.dataValues.title
+  };
+  await models.Order.upsert(playlist);
+});
 // TODO: Buy - add record in orders, create playlist (here and in youtube), export videos
 
 // TODO: LIST playlists for sale
