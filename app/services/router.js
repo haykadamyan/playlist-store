@@ -102,17 +102,38 @@ router.get('/playlist/buy/:id', async function (ctx) {
   const playlistId = parseInt(ctx.params.id);
   let infoPlaylist = await Playlist.findById(playlistId);
 
+  const plainPlaylist = infoPlaylist.get({plain:true});
+
+  //add record in orders table
   let playlist = {
-    userId: infoPlaylist.dataValues.ownerId,
-    playlistId: infoPlaylist.dataValues.id
+    userId: ctx.state.user.id,
+    playlistId: plainPlaylist.id
   };
 
   await models.Order.upsert(playlist);
 
-  ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
-  // TODO: create playlist in DB (set original ID)
-  // TODO: create playlist in youtube
-  // TODO: export videos
+  //create Playlist in youtube
+  const newYoutubePlaylist = await ctx.state.youtubeAPI.createPlaylist(plainPlaylist.title , plainPlaylist.description);
+
+  //add videos to youtube playlist
+  const playlistVideoIds = JSON.parse(plainPlaylist.videos);
+
+  for (let i = 0; i < playlistVideoIds.length; i++) {
+    await ctx.state.youtubeAPI.addVideoToPlaylist(newYoutubePlaylist.id, playlistVideoIds[i]);
+  }
+
+  //create playlist in DB
+  await Playlist.create({
+    youtubeId: newYoutubePlaylist.id,
+    title: plainPlaylist.title,
+    description: plainPlaylist.description,
+    ownerId: ctx.state.user.id,
+    status:'youtube',
+    originalId: plainPlaylist.id
+  });
+
+  ctx.response.body = {status: 'success', message: "Successfully bought playlist"};
+
 });
 
 
