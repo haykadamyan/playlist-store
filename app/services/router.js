@@ -20,15 +20,15 @@ const payment = {
 router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
 
-  const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.dataValues.id}});
+  const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.id}});
   const sellPlaylists = await Playlist.findAll({where: {status: "for sale"}});
-  const purchasedVid = await models.Order.findAll({where: {userId: ctx.state.user.dataValues.id}});
+  const purchasedVid = await models.Order.findAll({where: {userId: ctx.state.user.id}});
 
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
     sell: sellPlaylists,
-    userId: ctx.state.user.dataValues.id,
+    userId: ctx.state.user.id,
     purchased: purchasedVid
   });
 });
@@ -53,16 +53,16 @@ router.get('/playlist', async function (ctx) {
 });
 
 
-router.get('/playlist-page', async function (ctx) {
-  const videoAdd = await ctx.state.youtubeAPI.addVideoToPlaylist('PL5Hd9Buq4RCHps1mN3je3VGiXAhQWDaRv', 'EzfPo7LyDys');
-  await ctx.render('playlist-page', {title: "Playlist page"});
-});
-
-router.get('/create-playlist', async function (ctx) {
-  //youtubeAPI.createPlaylist(name);
-  const newPlaylist = await ctx.state.youtubeAPI.createPlaylist("Armen test");
-  await ctx.render('create-playlist', {title: "Create playlist"});
-});
+// router.get('/playlist-page', async function (ctx) {
+//   const videoAdd = await ctx.state.youtubeAPI.addVideoToPlaylist('PL5Hd9Buq4RCHps1mN3je3VGiXAhQWDaRv', 'EzfPo7LyDys');
+//   await ctx.render('playlist-page', {title: "Playlist page"});
+// });
+//
+// router.get('/create-playlist', async function (ctx) {
+//   //youtubeAPI.createPlaylist(name);
+//   const newPlaylist = await ctx.state.youtubeAPI.createPlaylist("Armen test");
+//   await ctx.render('create-playlist', {title: "Create playlist"});
+// });
 
 router.get('/auth/youtube',
   passport.authenticate('google',
@@ -128,7 +128,7 @@ router.get('/playlist/buy/:id', async function (ctx) {
     title: plainPlaylist.title,
     description: plainPlaylist.description,
     ownerId: ctx.state.user.id,
-    status:'youtube',
+    status:'purchased',
     originalId: plainPlaylist.id
   });
 
