@@ -65,6 +65,4 @@ Playlist.sync();
 Order.sync();
 Sale.sync();
 
-
 module.exports = {User, Playlist, Order, Sale};
-
