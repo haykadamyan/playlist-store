@@ -21,15 +21,12 @@ router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
 
   const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.id}});
-  const sellPlaylists = await Playlist.findAll({where: {status: "for sale"}});
-  const purchasedVid = await models.Order.findAll({where: {userId: ctx.state.user.id}});
+  const storePlaylists = await Playlist.findAll({where:{status: "for sale", ownerId:{$not:ctx.state.user.id}}});
 
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
-    sell: sellPlaylists,
-    userId: ctx.state.user.id,
-    purchased: purchasedVid
+    storePlaylists: storePlaylists
   });
 });
 

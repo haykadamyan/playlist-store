@@ -10,40 +10,26 @@
             <tr>
                 <td>
                     <ul>
-                        <% 
-                            for(var a = 0; a < playlists.length; a++){ 
-                            if(playlists[a].dataValues.status == 'youtube')
-                            {
-                                %>
-                                    <li>
-                                        <%= playlists[a].dataValues.title %>
-                                        <button class="sellButton" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
-                                    </li>
-                                <%
-                            }
-                            else if(playlists[a].dataValues.status == 'for sale')
-                            {
-                                %> 
-                                    <li><%= playlists[a].dataValues.title %><span class="forSale"> For sale </span></li>
-                                <%
-                            }
-                        %>
+                        <% for(let a = 0; a < playlists.length; a++){
+                            if (playlists[a].dataValues.status === 'youtube') { %>
+                                <li>
+                                    <%= playlists[a].dataValues.title %>
+                                    <button class="sellButton" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
+                                </li>
+                            <% } else { %>
+                                <li><%= playlists[a].dataValues.title %><span class="forSale" style="text-transform: capitalize;"> <%=playlists[a].dataValues.status%> </span></li>
+                            <% } %>
                         <% } %>
-                        <% console.log(purchased); %>
-                        <% for(var a = 0; a < purchased.length; a++){ %>
-                            <li><%= purchased[a].dataValues.playlistTitle %><span>Purchased</span></li>
-                        <% } %> 
+
+
                     </ul>
                 </td>
                 <td>
                     <ul>
                         <h2>Store</h2>
-                        <% 
-                            for(var a = 0; a < sell.length; a++){
-                                sell[a].dataValues.userId = userId;
-                        %>
-                            <li><%= sell[a].dataValues.title+' ' %><button data-id='<%= sell[a].dataValues.id %>' class="buyButton">buy</button></li>
-                        <%  } %>
+                        <% for (let a = 0; a < storePlaylists.length; a++) { %>
+                            <li><%= storePlaylists[a].dataValues.title+' ' %><button data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton">Buy</button></li>
+                        <% } %>
                     </ul>
                 </td>
             </tr>
