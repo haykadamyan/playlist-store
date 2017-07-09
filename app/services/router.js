@@ -34,20 +34,20 @@ router.get('/payment', async function (ctx) {
   await ctx.render('payment', {payment: payment});
 });
 
-router.get('/playlist', async function (ctx) {
-
-  const playlistsArmen = Sync.playlists(ctx.state.user);
-
-  const playlists = await ctx.state.youtubeAPI.getPlaylists();
-  let myPlaylists = [];
-  let myPlaylistVids = [];
-  for (var a = 0; a < playlists.items.length; a++) {
-    myPlaylists.push(playlists.items[a]);
-    myPlaylistVids.push(await ctx.state.youtubeAPI.getPlaylistItems(myPlaylists[myPlaylists.length - 1].id));
-    myPlaylistVids.push('end');
-  }
-  await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylists, videos: myPlaylistVids});
-});
+// router.get('/playlist', async function (ctx) {
+//
+//   const playlistsArmen = Sync.playlists(ctx.state.user);
+//
+//   const playlists = await ctx.state.youtubeAPI.getPlaylists();
+//   let myPlaylists = [];
+//   let myPlaylistVids = [];
+//   for (var a = 0; a < playlists.items.length; a++) {
+//     myPlaylists.push(playlists.items[a]);
+//     myPlaylistVids.push(await ctx.state.youtubeAPI.getPlaylistItems(myPlaylists[myPlaylists.length - 1].id));
+//     myPlaylistVids.push('end');
+//   }
+//   await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylists, videos: myPlaylistVids});
+// });
 
 
 // router.get('/playlist-page', async function (ctx) {
