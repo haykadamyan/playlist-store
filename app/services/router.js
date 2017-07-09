@@ -34,6 +34,20 @@ router.get('/payment', async function (ctx) {
   await ctx.render('payment', {payment: payment});
 });
 
+router.get('/playlist/:id', async function(ctx){
+  const id = parseInt(ctx.params.id);
+  const playlist = await Playlist.findById(id);
+  const plainPlaylist = playlist.get({plain:true});
+
+  const videosData = await ctx.state.youtubeAPI.getPlaylistItems(playlist.youtubeId);
+
+  const videos = videosData.items.map((item)=>{
+    return item.snippet.title;
+  });
+
+  await ctx.render('playlist', {title: 'One playlist', playlist:plainPlaylist, videos:videos});
+});
+
 // router.get('/playlist', async function (ctx) {
 //
 //   const playlistsArmen = Sync.playlists(ctx.state.user);
