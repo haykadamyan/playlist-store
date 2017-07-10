@@ -19,57 +19,61 @@ const payment = {
 
 router.get('/', async function (ctx) {
   await Sync.playlists(ctx.state.user);
-<<<<<<< HEAD
-  const playlists = await Playlist.findAll({where:{ownerId: ctx.state.user.dataValues.id}});
-  const sellPlaylists = await Playlist.findAll({where:{status:"for sale"}});
-  const purchasedVid = await models.Order.findAll({where:{userId:ctx.state.user.dataValues.id}});
-  await ctx.render('main', {title: "Playlist Store", playlists: playlists, sell:sellPlaylists, userId:ctx.state.user.dataValues.id, purchased: purchasedVid});
-=======
 
-  const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.dataValues.id}});
-  const sellPlaylists = await Playlist.findAll({where: {status: "for sale"}});
-  const purchasedVid = await models.Order.findAll({where: {userId: ctx.state.user.dataValues.id}});
+  const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.id}});
+  const storePlaylists = await Playlist.findAll({where:{status: "for sale", ownerId:{$not:ctx.state.user.id}}});
 
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
-    sell: sellPlaylists,
-    userId: ctx.state.user.dataValues.id,
-    purchased: purchasedVid
+    storePlaylists: storePlaylists
   });
->>>>>>> 335c4fa3eb11fa53ee9d6de74b255cccaddaf012
 });
 
 router.get('/payment', async function (ctx) {
   await ctx.render('payment', {payment: payment});
 });
 
-router.get('/playlist', async function (ctx) {
+router.get('/playlist/:id', async function(ctx){
+  const id = parseInt(ctx.params.id);
+  const playlist = await Playlist.findById(id);
+  const plainPlaylist = playlist.get({plain:true});
 
-  const playlistsArmen = Sync.playlists(ctx.state.user);
+  const videosData = await ctx.state.youtubeAPI.getPlaylistItems(playlist.youtubeId);
 
-  const playlists = await ctx.state.youtubeAPI.getPlaylists();
-  let myPlaylists = [];
-  let myPlaylistVids = [];
-  for (var a = 0; a < playlists.items.length; a++) {
-    myPlaylists.push(playlists.items[a]);
-    myPlaylistVids.push(await ctx.state.youtubeAPI.getPlaylistItems(myPlaylists[myPlaylists.length - 1].id));
-    myPlaylistVids.push('end');
-  }
-  await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylists, videos: myPlaylistVids});
+  const videos = videosData.items.map((item)=>{
+    return item.snippet.title;
+  });
+
+  await ctx.render('playlist', {title: 'One playlist', playlist:plainPlaylist, videos:videos});
 });
 
+// router.get('/playlist', async function (ctx) {
+//
+//   const playlistsArmen = Sync.playlists(ctx.state.user);
+//
+//   const playlists = await ctx.state.youtubeAPI.getPlaylists();
+//   let myPlaylists = [];
+//   let myPlaylistVids = [];
+//   for (var a = 0; a < playlists.items.length; a++) {
+//     myPlaylists.push(playlists.items[a]);
+//     myPlaylistVids.push(await ctx.state.youtubeAPI.getPlaylistItems(myPlaylists[myPlaylists.length - 1].id));
+//     myPlaylistVids.push('end');
+//   }
+//   await ctx.render('playlist', {title: "Playlist page", playlist: myPlaylists, videos: myPlaylistVids});
+// });
 
-router.get('/playlist-page', async function (ctx) {
-  const videoAdd = await ctx.state.youtubeAPI.addVideoToPlaylist('PL5Hd9Buq4RCHps1mN3je3VGiXAhQWDaRv', 'EzfPo7LyDys');
-  await ctx.render('playlist-page', {title: "Playlist page"});
-});
 
-router.get('/create-playlist', async function (ctx) {
-  //youtubeAPI.createPlaylist(name);
-  const newPlaylist = await ctx.state.youtubeAPI.createPlaylist("Armen test");
-  await ctx.render('create-playlist', {title: "Create playlist"});
-});
+// router.get('/playlist-page', async function (ctx) {
+//   const videoAdd = await ctx.state.youtubeAPI.addVideoToPlaylist('PL5Hd9Buq4RCHps1mN3je3VGiXAhQWDaRv', 'EzfPo7LyDys');
+//   await ctx.render('playlist-page', {title: "Playlist page"});
+// });
+//
+// router.get('/create-playlist', async function (ctx) {
+//   //youtubeAPI.createPlaylist(name);
+//   const newPlaylist = await ctx.state.youtubeAPI.createPlaylist("Armen test");
+//   await ctx.render('create-playlist', {title: "Create playlist"});
+// });
 
 router.get('/auth/youtube',
   passport.authenticate('google',
@@ -107,25 +111,40 @@ router.get('/playlist/sell/:id', async function (ctx) {
 
 router.get('/playlist/buy/:id', async function (ctx) {
   const playlistId = parseInt(ctx.params.id);
-<<<<<<< HEAD
-  let infoPlaylist = await  Playlist.findOne({where:{id: playlistId}});
-  let plainPlaylist = infoPlaylist.get({plain:true});
-=======
   let infoPlaylist = await Playlist.findById(playlistId);
 
->>>>>>> 335c4fa3eb11fa53ee9d6de74b255cccaddaf012
+  const plainPlaylist = infoPlaylist.get({plain:true});
+
+  //add record in orders table
   let playlist = {
-      userId: plainPlaylist.ownerId,
-      playlistId: plainPlaylist.id,
-      playlistTitle: plainPlaylist.title
+    userId: ctx.state.user.id,
+    playlistId: plainPlaylist.id
   };
 
   await models.Order.upsert(playlist);
 
-  ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
-  // TODO: create playlist in DB (set original ID)
-  // TODO: create playlist in youtube
-  // TODO: export videos
+  //create Playlist in youtube
+  const newYoutubePlaylist = await ctx.state.youtubeAPI.createPlaylist(plainPlaylist.title , plainPlaylist.description);
+
+  //add videos to youtube playlist
+  const playlistVideoIds = JSON.parse(plainPlaylist.videos);
+
+  for (let i = 0; i < playlistVideoIds.length; i++) {
+    await ctx.state.youtubeAPI.addVideoToPlaylist(newYoutubePlaylist.id, playlistVideoIds[i]);
+  }
+
+  //create playlist in DB
+  await Playlist.create({
+    youtubeId: newYoutubePlaylist.id,
+    title: plainPlaylist.title,
+    description: plainPlaylist.description,
+    ownerId: ctx.state.user.id,
+    status:'purchased',
+    originalId: plainPlaylist.id
+  });
+
+  ctx.response.body = {status: 'success', message: "Successfully bought playlist"};
+
 });
 
 

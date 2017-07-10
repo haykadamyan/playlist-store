@@ -35,8 +35,12 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(async function (id, done) {
   try {
     const user = await models.User.findOne({where: {googleId: id}});
+    if (user) {
+      done(null, user.get({plain:true}));
+    } else {
+      done(null, null);
+    }
 
-    done(null, user);
   } catch(err){
     done(err, null);
   }
