@@ -9,6 +9,7 @@ const models = require('./models');
 const router = new Router();
 const Playlist = models.Playlist;
 const Sale = models.Sale;
+const User = models.User;
 
 router.get('/', async function (ctx) {
   if (!ctx.isAuthenticated()) {
@@ -25,16 +26,25 @@ router.get('/', async function (ctx) {
     playlists: playlists,
     storePlaylists: storePlaylists
   });
+});
 
+router.get('/ILPAddressChange', async function (ctx) {
+    let data = ctx.query;
 
+    const user = await User.findById(ctx.state.user.id);
+
+    await user.update({ILPAddress: data.address});
+
+    console.log(data);
+
+    ctx.response.body = {status: 'success', message: "IPL address updated"};
 });
 
 router.get('/playlist/:id', async function (ctx) {
   const id = parseInt(ctx.params.id);
   const playlist = await Playlist.findById(id);
   const plainPlaylist = playlist.get({plain: true});
-
-    const videosData = await ctx.state.youtubeAPI.getPlaylistItems(playlist.youtubeId);
+  const videosData = await ctx.state.youtubeAPI.getPlaylistItems(playlist.youtubeId);
 
   const videos = videosData.items.map((item) => {
     return item.snippet.title;
@@ -42,7 +52,10 @@ router.get('/playlist/:id', async function (ctx) {
 
   await ctx.render('playlist', {title: 'One playlist', playlist: plainPlaylist, videos: videos});
 });
+router.get('/userInfo', async function(ctx){
 
+    await ctx.render('userInfo', {userName: ctx.state.user.displayName});
+});
 router.get('/auth/youtube',
     passport.authenticate('google',
         {scope: config.google.scope, accessType: config.google.accessType, approvalPrompt: config.google.approvalPrompt}

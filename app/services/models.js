@@ -17,6 +17,10 @@ const User = sequelize.define('users', {
   googleId: {
     type: Sequelize.STRING,
     unique:true
+  },
+  ILPAddress: {
+    type: Sequelize.STRING,
+    unique: true
   }
 });
 
