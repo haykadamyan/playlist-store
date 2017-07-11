@@ -53,8 +53,7 @@ router.get('/playlist/:id', async function (ctx) {
   await ctx.render('playlist', {title: 'One playlist', playlist: plainPlaylist, videos: videos});
 });
 router.get('/userInfo', async function(ctx){
-
-    await ctx.render('userInfo', {userName: ctx.state.user.displayName});
+    await ctx.render('userInfo', {user: ctx.state.user});
 });
 router.get('/auth/youtube',
     passport.authenticate('google',

@@ -5,10 +5,15 @@
         <%- include('header') %>
         <div class="content">
             <div>
-                User Name : <%= userName %>
+                User Name : <%= user.displayName %>
             </div>
             <div id="ledgerTr">
-                <b>InterLedger :</b> <span id="ledgerAdress">Enter intledger adress here</span>
+                <b>InterLedger :</b>
+                <% if(user.ILPAddress){ %>
+                    <span id="ledgerAdress"><%= user.ILPAddress %></span>
+                <% }else {%>
+                    <span id="ledgerAdress">Enter interledger adress here</span>
+                <% } %>
             </div>
             <div id="editDiv">
                 <button id="edit">Edit</button>

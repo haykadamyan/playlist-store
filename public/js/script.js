@@ -31,7 +31,7 @@ $(document).ready(function () {
         $('#sub').remove();
         $("#editDiv").append('<button id="edit">Edit</button>');
         $('#ledgerSpan').remove();
-        $('#ledgerTr').append('<span id="ledgerAdress">Enter intledger adress here</span>');
+        $('#ledgerTr').append('<span id="ledgerAdress">'+value+'</span>');
         $("#edit").click(editClicked);
     }
 
