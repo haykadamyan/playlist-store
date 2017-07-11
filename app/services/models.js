@@ -18,9 +18,12 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     unique:true
   },
-  ILPAddress: {
+  ILPUsername: {
     type: Sequelize.STRING,
     unique: true
+  },
+  ILPPassword: {
+    type: Sequelize.STRING
   }
 });
 
@@ -44,6 +47,10 @@ const Playlist = sequelize.define('playlists', {
   originalId:{
     type: Sequelize.INTEGER,
     defaultValue: null
+  },
+  price: {
+    type: Sequelize.FLOAT,
+    defaultValue: 0.99
   }
 });
 

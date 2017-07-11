@@ -1,10 +1,12 @@
 'use strict';
 
+const Router = require('koa-router');
+
 const config = require('../../config/config');
 const passport = require('./passport');
-const Router = require('koa-router');
 const Sync = require('./sync');
 const models = require('./models');
+const pay = require('./pay');
 
 const router = new Router();
 const Playlist = models.Playlist;
@@ -33,7 +35,7 @@ router.get('/ILPAddressChange', async function (ctx) {
 
     const user = await User.findById(ctx.state.user.id);
 
-    await user.update({ILPAddress: data.address});
+    await user.update({ILPUsername: data.address, ILPPassword:data.password});
 
     console.log(data);
 
