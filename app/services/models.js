@@ -34,7 +34,10 @@ const Playlist = sequelize.define('playlists', {
   },
   title: Sequelize.STRING,
   description: Sequelize.TEXT,
-  ownerId : Sequelize.INTEGER,
+  ownerId : {
+    type: Sequelize.INTEGER,
+    unique: 'purchase'
+  },
   status: {
     type:Sequelize.STRING,
     defaultValue: 'youtube'
@@ -46,7 +49,8 @@ const Playlist = sequelize.define('playlists', {
   videos: Sequelize.TEXT,
   originalId:{
     type: Sequelize.INTEGER,
-    defaultValue: null
+    defaultValue: null,
+    unique: 'purchase'
   },
   price: {
     type: Sequelize.FLOAT,
@@ -75,5 +79,10 @@ User.sync({force:true});
 Playlist.sync({force:true});
 Order.sync({force:true});
 Sale.sync({force:true});
+
+// User.sync();
+// Playlist.sync();
+// Order.sync();
+// Sale.sync();
 
 module.exports = {User, Playlist, Order, Sale};

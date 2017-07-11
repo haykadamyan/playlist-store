@@ -12,6 +12,7 @@ const router = new Router();
 const Playlist = models.Playlist;
 const Sale = models.Sale;
 const User = models.User;
+const Order = models.Order;
 
 router.get('/', async function (ctx) {
   if (!ctx.isAuthenticated()) {
@@ -31,15 +32,15 @@ router.get('/', async function (ctx) {
 });
 
 router.get('/ILPAuthenticate', async function (ctx) {
-    let data = ctx.query;
+  let data = ctx.query;
 
-    const user = await User.findById(ctx.state.user.id);
+  const user = await User.findById(ctx.state.user.id);
 
-    await user.update({ILPUsername: data.username, ILPPassword: data.password});
+  await user.update({ILPUsername: data.username, ILPPassword: data.password});
 
-    console.log(data);
+  console.log(data);
 
-    ctx.response.body = {status: 'success', message: "ILP address updated"};
+  ctx.response.body = {status: 'success', message: "ILP address updated"};
 });
 
 router.get('/playlist/:id', async function (ctx) {
@@ -54,68 +55,74 @@ router.get('/playlist/:id', async function (ctx) {
 
   await ctx.render('playlist', {title: 'One playlist', playlist: plainPlaylist, videos: videos});
 });
-router.get('/userInfo', async function(ctx){
-    await ctx.render('userInfo', {user: ctx.state.user});
+router.get('/userInfo', async function (ctx) {
+  await ctx.render('userInfo', {user: ctx.state.user});
 });
 router.get('/auth/youtube',
-    passport.authenticate('google',
-        {scope: config.google.scope, accessType: config.google.accessType, approvalPrompt: config.google.approvalPrompt}
-    )
+  passport.authenticate('google',
+    {scope: config.google.scope, accessType: config.google.accessType, approvalPrompt: config.google.approvalPrompt}
+  )
 );
 
 router.get('/auth/youtube/callback',
-    passport.authenticate('google',
-        {successRedirect: '/', failureRedirect: '/armen'}
-    )
+  passport.authenticate('google',
+    {successRedirect: '/', failureRedirect: '/armen'}
+  )
 );
 router.get('/logout', function (ctx) {
-    ctx.logout();
-    ctx.redirect('/');
+  ctx.logout();
+  ctx.redirect('/');
 });
 router.get('/playlist/sell/:id', async function (ctx) {
-    const id = parseInt(ctx.params.id);
-    const playlist = await Playlist.findById(id);
-    if (playlist.get('ownerId') !== ctx.state.user.id) {
-        ctx.response.status = 403;
-        ctx.response.body = {status: 'failed', err: "It's not your playlist"};
-    }
+  const id = parseInt(ctx.params.id);
+  const playlist = await Playlist.findById(id);
+  if (playlist.get('ownerId') !== ctx.state.user.id) {
+    ctx.response.status = 403;
+    ctx.response.body = {status: 'failed', err: "It's not your playlist"};
+  }
 
-    const videos = await ctx.state.youtubeAPI.getPlaylistItems(playlist.get('youtubeId'));
-    const videoIds = videos.items.map((item) => {
-        return item.contentDetails.videoId;
-    });
+  const videos = await ctx.state.youtubeAPI.getPlaylistItems(playlist.get('youtubeId'));
+  const videoIds = videos.items.map((item) => {
+    return item.contentDetails.videoId;
+  });
 
-    const json = JSON.stringify(videoIds);
+  const json = JSON.stringify(videoIds);
 
-    await playlist.update({status: "for sale", videos: json});
+  await playlist.update({status: "for sale", videos: json});
 
-    await Sale.upsert({playlistId: id});
+  await Sale.upsert({playlistId: id});
 
-    ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
+  ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
 });
 
 router.get('/playlist/buy/:id', async function (ctx) {
-    const playlistId = parseInt(ctx.params.id);
-    let infoPlaylist = await Playlist.findById(playlistId);
-    const plainPlaylist = infoPlaylist.get({plain: true});
+  const playlistId = parseInt(ctx.params.id);
+  let infoPlaylist = await Playlist.findById(playlistId);
+  const plainPlaylist = infoPlaylist.get({plain: true});
 
-    //add record in orders table
-    let playlist = {
-        userId: ctx.state.user.id,
-        playlistId: plainPlaylist.id
-    };
+  const user = await User.findById(plainPlaylist.ownerId);
 
-    await models.Order.upsert(playlist);
+  console.log(user);
+
+  await pay(ctx.state.user.ILPUsername, ctx.state.user.ILPPassword, user.get('ILPUsername'), plainPlaylist.price);
+
+  //add record in orders table
+  let playlist = {
+    userId: ctx.state.user.id,
+    playlistId: plainPlaylist.id
+  };
+
+  await models.Order.upsert(playlist);
 
   //create Playlist in youtube
   const newYoutubePlaylist = await ctx.state.youtubeAPI.createPlaylist(plainPlaylist.title, plainPlaylist.description);
 
-    //add videos to youtube playlist
-    const playlistVideoIds = JSON.parse(plainPlaylist.videos);
+  //add videos to youtube playlist
+  const playlistVideoIds = JSON.parse(plainPlaylist.videos);
 
-    for (let i = 0; i < playlistVideoIds.length; i++) {
-        await ctx.state.youtubeAPI.addVideoToPlaylist(newYoutubePlaylist.id, playlistVideoIds[i]);
-    }
+  for (let i = 0; i < playlistVideoIds.length; i++) {
+    await ctx.state.youtubeAPI.addVideoToPlaylist(newYoutubePlaylist.id, playlistVideoIds[i]);
+  }
 
   //create playlist in DB
   await Playlist.create({
@@ -127,16 +134,19 @@ router.get('/playlist/buy/:id', async function (ctx) {
     originalId: plainPlaylist.id
   });
 
-    ctx.response.body = {status: 'success', message: "Successfully bought playlist"};
+  ctx.response.body = {status: 'success', message: "Successfully bought playlist"};
+
+
+  //TODO:: Disable multiple purchase
 
 });
 
 router.use(async function (ctx, next) {
-    if (ctx.isAuthenticated()) {
-        return next()
-    } else {
-        ctx.redirect('/')
-    }
+  if (ctx.isAuthenticated()) {
+    return next()
+  } else {
+    ctx.redirect('/')
+  }
 });
 
 module.exports = router;
