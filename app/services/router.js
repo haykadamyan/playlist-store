@@ -28,16 +28,16 @@ router.get('/', async function (ctx) {
   });
 });
 
-router.get('/ILPAddressChange', async function (ctx) {
+router.get('/ILPAuthenticate', async function (ctx) {
     let data = ctx.query;
 
     const user = await User.findById(ctx.state.user.id);
 
-    await user.update({ILPAddress: data.address});
+    await user.update({ILPUsername: data.username, ILPPassword: data.password});
 
     console.log(data);
 
-    ctx.response.body = {status: 'success', message: "IPL address updated"};
+    ctx.response.body = {status: 'success', message: "ILP address updated"};
 });
 
 router.get('/playlist/:id', async function (ctx) {

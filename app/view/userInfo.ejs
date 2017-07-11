@@ -9,11 +9,12 @@
             </div>
             <div id="ledgerTr">
                 <b>InterLedger :</b>
-                <% if(user.ILPAddress){ %>
-                    <span id="ledgerAdress"><%= user.ILPAddress %></span>
+                <% if(user.ILPUserName){ %>
+                    <span id="ledgerAdress">Username : <%= user.ILPUserName %></span>
                 <% }else {%>
-                    <span id="ledgerAdress">Enter interledger adress here</span>
+                    <span id="ledgerAdress">Enter interledger username here</span>
                 <% } %>
+                <span id="error"></span>
             </div>
             <div id="editDiv">
                 <button id="edit">Edit</button>

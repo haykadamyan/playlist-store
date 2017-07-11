@@ -18,7 +18,11 @@ const User = sequelize.define('users', {
     type: Sequelize.STRING,
     unique:true
   },
-  ILPAddress: {
+  ILPUsername: {
+    type: Sequelize.STRING,
+    unique: true
+  },
+  ILPPassword: {
     type: Sequelize.STRING,
     unique: true
   }
