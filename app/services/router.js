@@ -25,7 +25,6 @@ router.get('/', async function (ctx) {
   const storePlaylists = await Playlist.findAll({where: {status: "for sale", ownerId: {$not: ctx.state.user.id}}});
   const purchasedPlaylists = await Playlist.findAll({where: {status: 'purchased', ownerId: ctx.state.user.id}});
   const ordersPlaylists = await Order.findAll();
-  let orderUsersNames = [];
   let orderPlaylistsNames = [];
   let trues = 0;
   for (let a = 0; a < storePlaylists.length; a++) {
@@ -41,15 +40,15 @@ router.get('/', async function (ctx) {
   }
   for (let a = 0; a < ordersPlaylists.length; a++) {
     const orderPlaylist = await Playlist.findAll({where: {id: ordersPlaylists[a].playlistId, ownerId: ctx.state.user.id}});
-    orderUsersNames.push(orderUser);
     orderPlaylistsNames.push(orderPlaylist);
   }
-  const orderInfo = [orderUsersNames, orderPlaylistsNames];
+  const mySales = await Playlist.findAll({where: {ownerId: ctx.state.user.id, status:'for sale'}});
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
     storePlaylists: storePlaylists,
-    orders: orderInfo
+    orders: orderPlaylistsNames,
+    sales: mySales
   });
 });
 
@@ -62,7 +61,14 @@ router.get('/ILPAuthenticate', async function (ctx) {
 
   ctx.response.body = {status: 'success', message: "ILP address updated"};
 });
+router.get('/dontSell', async function (ctx) {
+    let data = ctx.query;
+    const playlist = await Playlist.findOne({where:{ownerId: ctx.state.user.id, id: data.playlistId}});
 
+    await playlist.update({status: 'youtube'});
+
+    ctx.response.body = {status: 'success', message: "status changed"};
+});
 router.get('/playlist/:id', async function (ctx) {
   const id = parseInt(ctx.params.id);
   const playlist = await Playlist.findById(id);

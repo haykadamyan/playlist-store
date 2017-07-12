@@ -50,4 +50,11 @@ $(document).ready(function () {
         $("#editDiv").append('<button id="sub">Save</button>');
         $('#sub').click(saveClicked);
     }
+    $(".dontSell").click(function(){
+        $.get('/dontSell', {playlistId: $(this).data('id')}).then((response) => {
+            console.log(response);
+        }).catch((err) => {
+            console.log(err);
+        });
+    });
 });
