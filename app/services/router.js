@@ -129,7 +129,7 @@ router.get('/playlist/buy/:id', async function (ctx) {
   const user = await User.findById(plainPlaylist.ownerId);
 
 
-  //await pay(ctx.state.user.ILPUsername, ctx.state.user.ILPPassword, user.get('ILPUsername'), plainPlaylist.price);
+  await pay(ctx.state.user.ILPUsername, ctx.state.user.ILPPassword, user.get('ILPUsername'), plainPlaylist.price);
 
   //add record in orders table
   let playlist = {
