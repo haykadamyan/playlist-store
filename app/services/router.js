@@ -23,11 +23,39 @@ router.get('/', async function (ctx) {
 
   const playlists = await Playlist.findAll({where: {ownerId: ctx.state.user.id}});
   const storePlaylists = await Playlist.findAll({where: {status: "for sale", ownerId: {$not: ctx.state.user.id}}});
-
+  const purchasedPlaylists = await Playlist.findAll({where: {status: 'purchased', ownerId: ctx.state.user.id}});
+  const ordersPlaylists = await Order.findAll();
+  let orderUsersNames = [];
+  let orderPlaylistsNames = [];
+  let trues = 0;
+  for(let a = 0; a < storePlaylists.length; a++)
+  {
+    for(let b = 0; b < purchasedPlaylists.length; b++)
+    {
+      if(purchasedPlaylists[b].dataValues.originalId == storePlaylists[a].dataValues.id)
+      {
+        trues++;
+      }
+    }
+    if(trues == 1)
+    {
+      storePlaylists.splice(a, 1);
+    }
+    trues = 0;
+  }
+  for(let a = 0; a < ordersPlaylists.length; a++)
+  {
+    const orderUser = await User.findAll({where: {id:ordersPlaylists[a].userId}});
+    const orderPlaylist = await Playlist.findAll({where: {id:ordersPlaylists[a].playlistId}});
+    orderUsersNames.push(orderUser);
+    orderPlaylistsNames.push(orderPlaylist);
+  }
+  const orderInfo = [orderUsersNames, orderPlaylistsNames];
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
-    storePlaylists: storePlaylists
+    storePlaylists: storePlaylists,
+    orders: orderInfo
   });
 });
 
@@ -37,8 +65,6 @@ router.get('/ILPAuthenticate', async function (ctx) {
   const user = await User.findById(ctx.state.user.id);
 
   await user.update({ILPUsername: data.username, ILPPassword: data.password});
-
-  console.log(data);
 
   ctx.response.body = {status: 'success', message: "ILP address updated"};
 });
@@ -102,9 +128,8 @@ router.get('/playlist/buy/:id', async function (ctx) {
 
   const user = await User.findById(plainPlaylist.ownerId);
 
-  console.log(user);
 
-  await pay(ctx.state.user.ILPUsername, ctx.state.user.ILPPassword, user.get('ILPUsername'), plainPlaylist.price);
+  //await pay(ctx.state.user.ILPUsername, ctx.state.user.ILPPassword, user.get('ILPUsername'), plainPlaylist.price);
 
   //add record in orders table
   let playlist = {
@@ -133,7 +158,7 @@ router.get('/playlist/buy/:id', async function (ctx) {
     status: 'purchased',
     originalId: plainPlaylist.id
   });
-
+  console.log('purchased');
   ctx.response.body = {status: 'success', message: "Successfully bought playlist"};
 
 
