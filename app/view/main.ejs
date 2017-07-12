@@ -18,7 +18,7 @@
                 if (playlists[a].dataValues.status === 'youtube') { %>
                     <li style="width: 400px; height: 35px;">
                         <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a>
-                        <button style="float: right;" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
+                        <button style="float: right;" class="sellButton button" data-id="<%= playlists[a].dataValues.id %>" ><span>Sell</span></button>
                     </li>
             <%  allMyPlaylists.push(playlists[a].dataValues);
                 }
@@ -44,7 +44,7 @@
                 %>
                 <li>
                     <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
-                    <button data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton">Buy</button>
+                    <button data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton button"><span>Buy</span></button>
                 </li>
             <%  } %>
         </ul>
@@ -60,6 +60,7 @@
                     </li>
             <% } %>
         </ul>
+    <%- include('footer')%>
     <%- include('scripts') %>
     </body>
 </html>

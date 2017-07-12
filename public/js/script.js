@@ -39,7 +39,6 @@ $(document).ready(function () {
             $('#passwordInput').remove();
         }else{
             $('#error').text('You are not write your username or password');
-            //$('#sub').click(saveClicked);
         }
     }
 
