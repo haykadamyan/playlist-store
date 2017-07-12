@@ -75,14 +75,14 @@ const Sale = sequelize.define('sales', {
     }]
 });
 
-User.sync({force:true});
-Playlist.sync({force:true});
-Order.sync({force:true});
-Sale.sync({force:true});
+// User.sync({force:true});
+// Playlist.sync({force:true});
+// Order.sync({force:true});
+// Sale.sync({force:true});
 
-// User.sync();
-// Playlist.sync();
-// Order.sync();
-// Sale.sync();
+User.sync();
+Playlist.sync();
+Order.sync();
+Sale.sync();
 
 module.exports = {User, Playlist, Order, Sale};

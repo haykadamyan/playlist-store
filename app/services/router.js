@@ -28,25 +28,19 @@ router.get('/', async function (ctx) {
   let orderUsersNames = [];
   let orderPlaylistsNames = [];
   let trues = 0;
-  for(let a = 0; a < storePlaylists.length; a++)
-  {
-    for(let b = 0; b < purchasedPlaylists.length; b++)
-    {
-      if(purchasedPlaylists[b].dataValues.originalId == storePlaylists[a].dataValues.id)
-      {
+  for (let a = 0; a < storePlaylists.length; a++) {
+    for (let b = 0; b < purchasedPlaylists.length; b++) {
+      if (purchasedPlaylists[b].dataValues.originalId === storePlaylists[a].dataValues.id) {
         trues++;
       }
     }
-    if(trues == 1)
-    {
+    if (trues === 1) {
       storePlaylists.splice(a, 1);
     }
     trues = 0;
   }
-  for(let a = 0; a < ordersPlaylists.length; a++)
-  {
-    const orderUser = await User.findAll({where: {id:ordersPlaylists[a].userId}});
-    const orderPlaylist = await Playlist.findAll({where: {id:ordersPlaylists[a].playlistId}});
+  for (let a = 0; a < ordersPlaylists.length; a++) {
+    const orderPlaylist = await Playlist.findAll({where: {id: ordersPlaylists[a].playlistId, ownerId: ctx.state.user.id}});
     orderUsersNames.push(orderUser);
     orderPlaylistsNames.push(orderPlaylist);
   }
@@ -128,8 +122,13 @@ router.get('/playlist/buy/:id', async function (ctx) {
 
   const user = await User.findById(plainPlaylist.ownerId);
 
-
-  await pay(ctx.state.user.ILPUsername, ctx.state.user.ILPPassword, user.get('ILPUsername'), plainPlaylist.price);
+  await pay(
+    ctx.state.user.ILPUsername,
+    ctx.state.user.ILPPassword,
+    user.get('ILPUsername'),
+    plainPlaylist.price,
+    'Payment for youtube playlist: ' + infoPlaylist.get('title')
+  );
 
   //add record in orders table
   let playlist = {

@@ -4,13 +4,18 @@ const SPSP = require('ilp').SPSP;
 const FiveBellsPlugin = require('ilp-plugin-bells');
 
 
-async function pay(username, password, receiver, amount) {
-  const plugin = new FiveBellsPlugin({account:"https://ilp.tumo.org/ledger/accounts/" + username , password: password});
+async function pay(sender, password, receiver, amount, message) {
+  const plugin = new FiveBellsPlugin({account:"https://ilp.tumo.org/ledger/accounts/" + sender , password: password});
 
   await plugin.connect();
   console.log('Connected');
 
-  const payment = await SPSP.quote(plugin, {receiver: receiver + "@ilp.tumo.org", sourceAmount: amount});
+  let payment = await SPSP.quote(plugin, {receiver: receiver + "@ilp.tumo.org", sourceAmount: amount});
+
+  payment.headers = {
+    'Source-Identifier': sender + "@ilp.tumo.org",
+    'Message': message
+  };
 
   console.log('Payment is ready to send');
 
