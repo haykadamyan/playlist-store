@@ -18,7 +18,7 @@
                 if (playlists[a].dataValues.status === 'youtube') { %>
                     <li style="width: 400px; height: 35px;">
                         <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a>
-                        <button style="float: right;" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
+                        <button class="sellButton" style="float: right;" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
                     </li>
             <%  allMyPlaylists.push(playlists[a].dataValues);
                 }
@@ -50,16 +50,12 @@
         </ul>
 
         <h2>Orders</h2>
-        <ul>
-            <% for(let a = 0; a < orders[0].length; a++)
-               { %>
-                    <li>
-                        <span><%= orders[0][a][0].displayName %> bought </span>
-                        <a href="/playlist/<%= orders[1][a][0].id %>"><%= orders[1][a][0].title %></a>
-                        <span>playlist</span>
-                    </li>
+        <ol>
+            <% for (let i = 0;i< orders.length;i++) { %>
+                <li> <%= orders[i].user.get('displayName')%> boutght <%= orders[i].playlist.get('title')%> for <%= orgers[i].playlist.get('price')%> </li>
             <% } %>
-        </ul>
+        </ol>
+
     <%- include('scripts') %>
     </body>
 </html>

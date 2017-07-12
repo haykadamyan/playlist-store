@@ -39,17 +39,33 @@ router.get('/', async function (ctx) {
     }
     trues = 0;
   }
+
   for (let a = 0; a < ordersPlaylists.length; a++) {
     const orderPlaylist = await Playlist.findAll({where: {id: ordersPlaylists[a].playlistId, ownerId: ctx.state.user.id}});
-    orderUsersNames.push(orderUser);
     orderPlaylistsNames.push(orderPlaylist);
   }
-  const orderInfo = [orderUsersNames, orderPlaylistsNames];
+
+  let armen = await Order.findAll({
+    include:[
+      {
+        model:Playlist,
+        where: {ownerId: ctx.state.user.id},
+        attributes: ['title','price']
+      },
+      {
+        model: User,
+        attributes: ['displayName']
+      }
+    ]
+  });
+
+  //console.log(armen);
+
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
     storePlaylists: storePlaylists,
-    orders: orderInfo
+    orders: armen
   });
 });
 
