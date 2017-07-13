@@ -48,6 +48,8 @@ ul
 }
 body{
     background: #38383a;
+    margin: 8px;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 a, h1, p, span{
     color: #44b7d0 !important;
@@ -55,8 +57,8 @@ a, h1, p, span{
 
 footer{
     position: absolute;
-    bottom: 3em;
-    width: 75%;
+    bottom: 1em;
+    width: 100%;
 }
 
 h2{
@@ -77,14 +79,15 @@ button{
     text-align: center;
     font-size: 17px;
     padding: 3px;
-    width: 118px;
+    width: 122px;
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
 }
 .content ul li{
-
     margin: 1em;
+    width: 400px;
+    height: 35px;
 }
 .content ul{
 
@@ -115,6 +118,9 @@ button{
     opacity: 1;
     right: 0;
 }
+.dontSell {
+    float:right;
+}
 
 a {
     text-decoration: none !important;
@@ -130,10 +136,14 @@ a {
     margin-bottom: 1em;
 }
 
-#edit, #sub{
+#edit, #sub {
     color: white;
     background-color: #3eb4cf;
     border: solid 1px #3eb4cf;
     border-radius: 4px;
     padding: 10px;
+}
+
+li > * {
+    vertical-align: middle;
 }
