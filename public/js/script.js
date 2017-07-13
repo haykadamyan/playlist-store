@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('.sellButton').click(function () {
+      $(this).attr('disabled', 'disabled');
         $.get("/playlist/sell/" + $(this).data('id')).then((data) => {
             $(this).parent().append('<span class="forSale"> For sale </span>');
             $(this).remove();
@@ -10,6 +11,7 @@ $(document).ready(function () {
     });
 
     $('.buyButton').click(function () {
+        $(this).attr('disabled', 'disabled');
         $.get("/playlist/buy/" + $(this).data('id')).then(() => {
             $(this).parent().append('<span class="purchased"> Purchased </span>');
             $(this).remove();
