@@ -34,22 +34,12 @@
                         <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a><span> Purchased</span>
                     </li>
                     <% }
-                    else if(playlists[a].dataValues.status === 'for sale')
-                    { %>
-                    <li>
-                        <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a><span> For Sale</span>
-                    </li>
-                    <% }
                     } %>
-                </ul>
-            </td>
-            <td>
-                <h2>My Sales Playlists</h2>
-                <ul>
+
                     <% console.log(sales); for(let a = 0; a < sales.length; a++){ %>
                     <li>
                         <a href="/playlist/<%= sales[a].dataValues.id %>"><%= sales[a].dataValues.title %></a>
-                        <button data-id='<%= sales[a].dataValues.id %>' class="dontSell button"><span>Hervic andraniky heter galis</span>
+                        <button data-id='<%= sales[a].dataValues.id %>' class="dontSell button"><span>Stop selling</span>
                         </button>
                     </li>
                     <% } %>
@@ -73,7 +63,7 @@
         </tr>
         <tr>
             <td>
-                <h2>Orders</h2>
+                <h2>Bought For Me</h2>
                 <ul>
                     <% for(let a = 0; a < orders.length; a++)
                     { %>
