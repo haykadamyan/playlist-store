@@ -55,8 +55,8 @@ a, h1, p, span{
 
 footer{
     position: absolute;
-    bottom: 1em;
-    width: 100%;
+    bottom: 3em;
+    width: 75%;
 }
 
 h2{
@@ -122,4 +122,18 @@ a {
 
 .content {
     margin-top: 70px;
+}
+
+.info{
+    color: #41b5d0;
+    font-size: 1.2em;
+    margin-bottom: 1em;
+}
+
+#edit, #sub{
+    color: white;
+    background-color: #3eb4cf;
+    border: solid 1px #3eb4cf;
+    border-radius: 4px;
+    padding: 10px;
 }

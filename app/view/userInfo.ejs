@@ -1,11 +1,35 @@
 <html>
-    <head></head>
+    <head>
+        <style>
+            input[type='text'], input[type='password']
+            {
+                color: white;
+                background-color: #3eb4cf;
+                border: solid 1px #3eb4cf;
+                border-radius: 4px;
+                padding: 10px;
+                margin-right: 1em;
+            }
+            ::-webkit-input-placeholder {
+                color: white;
+            }
+            ::-moz-placeholder {
+                color: white;
+            }
+            :-ms-input-placeholder {
+                color: white;
+            }
+            :-moz-placeholder {
+                color: white;
+            }
+        </style>
+    </head>
     <body>
         <%- include('header') %>
-            <div>
-                User Name : <%= user.displayName %>
+            <div class="info">
+                <b>User Name :</b> <%= user.displayName %>
             </div>
-            <div id="ledgerTr">
+            <div id="ledgerTr" class="info">
                 <b>InterLedger :</b>
                 <% if(user.ILPUserName){ %>
                     <span id="ledgerAdress">Username : <%= user.ILPUserName %></span>
