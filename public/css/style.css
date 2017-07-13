@@ -1,0 +1,125 @@
+.menu {
+    float: right;
+}
+
+.menu ul li{
+    border:solid 1px;
+    padding: 1em;
+    display: inline-block;
+    margin-right:1em;
+}
+
+.logo, .nameWeb
+{
+    display:inline-block;
+}
+
+.logo img{
+    width:14em;
+}
+
+.menu{
+    float: right;
+}
+
+.menu li{
+    display: inline-block;
+    margin-right:1em;
+    padding: 1em;
+}
+
+.container{
+    width: 75%;
+    margin: auto;
+    height: 99%;
+}
+
+.footerP {
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    font-size: 1.05em
+}
+
+ul
+{
+    list-style-type: none;
+}
+body{
+    background: #38383a;
+}
+a, h1, p, span{
+    color: #44b7d0 !important;
+}
+
+footer{
+    position: absolute;
+    bottom: 1em;
+    width: 100%;
+}
+
+h2{
+    color:rgb(255, 255, 255);
+}
+
+button{
+    background-color: #fffaff;
+}
+
+
+.button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #44b7d0;
+    border: none;
+    color: #FFFFFF !important;
+    text-align: center;
+    font-size: 17px;
+    padding: 3px;
+    width: 118px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+.content ul li{
+
+    margin: 1em;
+}
+.content ul{
+
+    margin-top: 2em;
+}
+.button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    color: #FFFFFF !important;
+    transition: 0.5s;
+}
+
+.button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button:hover span {
+    padding-right: 25px;
+}
+
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.content {
+    margin-top: 70px;
+}

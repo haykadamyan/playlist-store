@@ -1,61 +1,94 @@
 <html>
-    <head>
-        <title>Main Page</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<head>
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 
 
-        <style>
+    <style>
 
-        </style>
-    </head>
-    <body>
-    <%- include('header') %>
-        <h2>My Playlists</h2>
+    </style>
+</head>
+<body>
+<%- include('header') %>
+<table>
+    <tbody>
+        <tr>
+            <td>
+                <h2>My Playlists</h2>
 
-        <ul>
-            <% var allMyPlaylists = [];
-            for(let a = 0; a < playlists.length; a++){
-                if (playlists[a].dataValues.status === 'youtube') { %>
+                <ul style="float: left;">
+                    <% var allMyPlaylists = [];
+                    for(let a = 0; a < playlists.length; a++){
+                    if (playlists[a].dataValues.status === 'youtube') { %>
                     <li style="width: 400px; height: 35px;">
                         <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a>
-                        <button class="sellButton" style="float: right;" data-id="<%= playlists[a].dataValues.id %>">Sell</button>
+                        <button style="float: right;" class="sellButton button" data-id="<%= playlists[a].dataValues.id %>">
+                            <span>Sell</span></button>
                     </li>
-            <%  allMyPlaylists.push(playlists[a].dataValues);
-                }
-                else if(playlists[a].dataValues.status === 'purchased')
-                {%>
+                    <% allMyPlaylists.push(playlists[a].dataValues);
+                    }
+                    else if(playlists[a].dataValues.status === 'purchased')
+                    { %>
                     <li>
                         <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a><span> Purchased</span>
                     </li>
-                <%}
-                else if(playlists[a].dataValues.status === 'for sale')
-                {%>
+                    <% }
+                    else if(playlists[a].dataValues.status === 'for sale')
+                    { %>
                     <li>
                         <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a><span> For Sale</span>
                     </li>
-                <% }
-               } %>
-
-        </ul>
-
-        <h2>Store</h2>
-        <ul>
-            <% for (let a = 0; a < storePlaylists.length; a++) {
-                %>
-                <li>
-                    <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
-                    <button data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton">Buy</button>
-                </li>
-            <%  } %>
-        </ul>
-
-        <h2>Orders</h2>
-        <ol>
-            <% for (let i = 0;i< orders.length;i++) { %>
-                <li> <%= orders[i].user.get('displayName')%> boutght <%= orders[i].playlist.get('title')%> for <%= orgers[i].playlist.get('price')%> </li>
-            <% } %>
-        </ol>
-
-    <%- include('scripts') %>
-    </body>
+                    <% }
+                    } %>
+                </ul>
+            </td>
+            <td>
+                <h2>My Sales Playlists</h2>
+                <ul>
+                    <% console.log(sales); for(let a = 0; a < sales.length; a++){ %>
+                    <li>
+                        <a href="/playlist/<%= sales[a].dataValues.id %>"><%= sales[a].dataValues.title %></a>
+                        <button data-id='<%= sales[a].dataValues.id %>' class="dontSell button"><span>Hervic andraniky heter galis</span>
+                        </button>
+                    </li>
+                    <% } %>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h2>Store</h2>
+                <ul style="clear:both;">
+                    <% for (let a = 0; a < storePlaylists.length; a++) {
+                    %>
+                    <li>
+                        <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
+                        <button data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton button"><span>Buy</span>
+                        </button>
+                    </li>
+                    <% } %>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h2>Orders</h2>
+                <ul>
+                    <% for(let a = 0; a < orders.length; a++)
+                    { %>
+                    <li>
+                        <span><%= orders[a].displayName %> bought </span>
+                        <a href="/playlist/<%= orders[a].id %>"><%= orders[a].title %></a>
+                        <span>playlist</span>
+                    </li>
+                    <% } %>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<%- include('footer') %>
+<%- include('scripts') %>
+</body>
 </html>
