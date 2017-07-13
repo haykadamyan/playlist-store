@@ -39,10 +39,15 @@ router.get('/', async function (ctx) {
     trues = 0;
   }
   for (let a = 0; a < ordersPlaylists.length; a++) {
-    const orderPlaylist = await Playlist.findAll({where: {id: ordersPlaylists[a].playlistId, ownerId: ctx.state.user.id}});
+    const orderPlaylist = await Playlist.findAll({
+      where: {
+        id: ordersPlaylists[a].playlistId,
+        ownerId: ctx.state.user.id
+      }
+    });
     orderPlaylistsNames.push(orderPlaylist);
   }
-  const mySales = await Playlist.findAll({where: {ownerId: ctx.state.user.id, status:'for sale'}});
+  const mySales = await Playlist.findAll({where: {ownerId: ctx.state.user.id, status: 'for sale'}});
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
@@ -61,14 +66,16 @@ router.get('/ILPAuthenticate', async function (ctx) {
 
   ctx.response.body = {status: 'success', message: "ILP address updated"};
 });
+
 router.get('/dontSell', async function (ctx) {
-    let data = ctx.query;
-    const playlist = await Playlist.findOne({where:{ownerId: ctx.state.user.id, id: data.playlistId}});
+  let data = ctx.query;
+  const playlist = await Playlist.findOne({where: {ownerId: ctx.state.user.id, id: data.playlistId}});
 
-    await playlist.update({status: 'youtube'});
+  await playlist.update({status: 'youtube'});
 
-    ctx.response.body = {status: 'success', message: "status changed"};
+  ctx.response.body = {status: 'success', message: "status changed"};
 });
+
 router.get('/playlist/:id', async function (ctx) {
   const id = parseInt(ctx.params.id);
   const playlist = await Playlist.findById(id);
@@ -81,9 +88,11 @@ router.get('/playlist/:id', async function (ctx) {
 
   await ctx.render('playlist', {title: 'One playlist', playlist: plainPlaylist, videos: videos});
 });
+
 router.get('/userInfo', async function (ctx) {
   await ctx.render('userInfo', {user: ctx.state.user});
 });
+
 router.get('/auth/youtube',
   passport.authenticate('google',
     {scope: config.google.scope, accessType: config.google.accessType, approvalPrompt: config.google.approvalPrompt}
@@ -95,10 +104,12 @@ router.get('/auth/youtube/callback',
     {successRedirect: '/', failureRedirect: '/armen'}
   )
 );
+
 router.get('/logout', function (ctx) {
   ctx.logout();
   ctx.redirect('/');
 });
+
 router.get('/playlist/sell/:id', async function (ctx) {
   const id = parseInt(ctx.params.id);
   const playlist = await Playlist.findById(id);
@@ -122,6 +133,32 @@ router.get('/playlist/sell/:id', async function (ctx) {
 });
 
 router.get('/playlist/buy/:id', async function (ctx) {
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  //
+  // console.log(' ______');
+  // console.log('/      \\');
+  // console.log('|  $$$$$$\\  ______   ______ ____    ______   _______          ______    ______   ______ ____    ______   _______');
+  // console.log('| $$__| $$ /      \\ |      \\    \\  /      \\ |       \\        |      \\  /      \\ |      \\    \\  /      \\ |       \\');
+  // console.log('| $$    $$|  $$$$$$\\| $$$$$$\\$$$$\\|  $$$$$$\\| $$$$$$$\\        \\$$$$$$\\|  $$$$$$\\| $$$$$$\\$$$$\\|  $$$$$$\\| $$$$$$$\\');
+  // console.log('| $$$$$$$$| $$   \\$$| $$ | $$ | $$| $$    $$| $$  | $$       /      $$| $$   \\$$| $$ | $$ | $$| $$    $$| $$  | $$');
+  // console.log('| $$  | $$| $$      | $$ | $$ | $$| $$$$$$$$| $$  | $$      |  $$$$$$$| $$      | $$ | $$ | $$| $$$$$$$$| $$  | $$');
+  // console.log('| $$  | $$| $$      | $$ | $$ | $$ \\$$     \\| $$  | $$       \\$$    $$| $$      | $$ | $$ | $$ \\$$     \\| $$  | $$');
+  // console.log('| $$   \\$$ \\$$       \\$$  \\$$  \\$$  \\$$$$$$$ \\$$   \\$$        \\$$$$$$$ \\$$       \\$$  \\$$  \\$$  \\$$$$$$$ \\$$   \\$$');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+  // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
+
+
   const playlistId = parseInt(ctx.params.id);
   let infoPlaylist = await Playlist.findById(playlistId);
   const plainPlaylist = infoPlaylist.get({plain: true});
