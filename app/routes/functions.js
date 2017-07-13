@@ -1,20 +1,7 @@
 'use strict';
 
-const Router = require('koa-router');
-
-const config = require('../../config/config');
-const passport = require('./passport');
-const Sync = require('./sync');
-const models = require('./models');
-const pay = require('./pay');
-
-const router = new Router();
-const Playlist = models.Playlist;
-const Sale = models.Sale;
-const User = models.User;
-const Order = models.Order;
-
-router.get('/', async function (ctx) {
+exports.main = async function (ctx) {
+  conole.log('armen');
   if (!ctx.isAuthenticated()) {
     await ctx.render('login');
     return false;
@@ -56,9 +43,13 @@ router.get('/', async function (ctx) {
     orders: orderPlaylistsNames,
     sales: mySales
   });
-});
+};
 
-router.get('/ILPAuthenticate', async function (ctx) {
+exports.userInfo = async function (ctx) {
+  await ctx.render('userInfo', {user: ctx.state.user});
+};
+
+exports.ILPAuthenticate = async function (ctx) {
   let data = ctx.query;
 
   const user = await User.findById(ctx.state.user.id);
@@ -66,18 +57,9 @@ router.get('/ILPAuthenticate', async function (ctx) {
   await user.update({ILPUsername: data.username, ILPPassword: data.password});
 
   ctx.response.body = {status: 'success', message: "ILP address updated"};
-});
+};
 
-router.get('/dontSell', async function (ctx) {
-  let data = ctx.query;
-  const playlist = await Playlist.findOne({where: {ownerId: ctx.state.user.id, id: data.playlistId}});
-
-  await playlist.update({status: 'youtube'});
-
-  ctx.response.body = {status: 'success', message: "status changed"};
-});
-
-router.get('/playlist/:id', async function (ctx) {
+exports.showPlaylist = async function (ctx) {
   const id = parseInt(ctx.params.id);
   const playlist = await Playlist.findById(id);
   const plainPlaylist = playlist.get({plain: true});
@@ -88,52 +70,9 @@ router.get('/playlist/:id', async function (ctx) {
   });
 
   await ctx.render('playlist', {title: 'One playlist', playlist: plainPlaylist, videos: videos});
-});
+};
 
-router.get('/userInfo', async function (ctx) {
-  await ctx.render('userInfo', {user: ctx.state.user});
-});
-
-router.get('/auth/youtube',
-  passport.authenticate('google',
-    {scope: config.google.scope, accessType: config.google.accessType, approvalPrompt: config.google.approvalPrompt}
-  )
-);
-
-router.get('/auth/youtube/callback',
-  passport.authenticate('google',
-    {successRedirect: '/', failureRedirect: '/armen'}
-  )
-);
-
-router.get('/logout', function (ctx) {
-  ctx.logout();
-  ctx.redirect('/');
-});
-
-router.get('/playlist/sell/:id', async function (ctx) {
-  const id = parseInt(ctx.params.id);
-  const playlist = await Playlist.findById(id);
-  if (playlist.get('ownerId') !== ctx.state.user.id) {
-    ctx.response.status = 403;
-    ctx.response.body = {status: 'failed', err: "It's not your playlist"};
-  }
-
-  const videos = await ctx.state.youtubeAPI.getPlaylistItems(playlist.get('youtubeId'));
-  const videoIds = videos.items.map((item) => {
-    return item.contentDetails.videoId;
-  });
-
-  const json = JSON.stringify(videoIds);
-
-  await playlist.update({status: "for sale", videos: json});
-
-  await Sale.upsert({playlistId: id});
-
-  ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
-});
-
-router.get('/playlist/buy/:id', async function (ctx) {
+exports.buyPlaylist = async function (ctx) {
   // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
   // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
   // console.log('------------------------------------------------------------------------------------------------------------------------------------------------');
@@ -203,16 +142,35 @@ router.get('/playlist/buy/:id', async function (ctx) {
   });
   console.log('purchased');
   ctx.response.body = {status: 'success', message: "Successfully bought playlist"};
+};
 
-
-});
-
-router.use(async function (ctx, next) {
-  if (ctx.isAuthenticated()) {
-    return next()
-  } else {
-    ctx.redirect('/')
+exports.sellPlaylist = async function (ctx) {
+  const id = parseInt(ctx.params.id);
+  const playlist = await Playlist.findById(id);
+  if (playlist.get('ownerId') !== ctx.state.user.id) {
+    ctx.response.status = 403;
+    ctx.response.body = {status: 'failed', err: "It's not your playlist"};
   }
-});
 
-module.exports = router;
+  const videos = await ctx.state.youtubeAPI.getPlaylistItems(playlist.get('youtubeId'));
+  const videoIds = videos.items.map((item) => {
+    return item.contentDetails.videoId;
+  });
+
+  const json = JSON.stringify(videoIds);
+
+  await playlist.update({status: "for sale", videos: json});
+
+  await Sale.upsert({playlistId: id});
+
+  ctx.response.body = {status: 'success', message: "The playlist is in the store now"};
+};
+
+exports.dontSell = async function (ctx) {
+  let data = ctx.query;
+  const playlist = await Playlist.findOne({where: {ownerId: ctx.state.user.id, id: data.playlistId}});
+
+  await playlist.update({status: 'youtube'});
+
+  ctx.response.body = {status: 'success', message: "status changed"};
+};
