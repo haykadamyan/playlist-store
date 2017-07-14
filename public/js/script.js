@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $('.sellButton').click(function () {
         $.get("/playlist/sell/" + $(this).data('id')).then((data) => {
-            $(this).parent().append('<span class="forSale"> For sale </span>');
+            $(this).parent().append('<button data-id="'+$(this).data("id")+'" class="dontSell button"><span>Stop selling</span></button>');
             $(this).remove();
             console.log(data);
         }).catch(function (err) {
@@ -53,6 +53,8 @@ $(document).ready(function () {
     $(".dontSell").click(function(){
         $.get('/dontSell', {playlistId: $(this).data('id')}).then((response) => {
             console.log(response);
+            $(this).parent().append('<button style="float: right;" class="sellButton button" data-id="'+$(this).data('id')+'"><span>Sell</span></button>');
+            $(this).remove();
         }).catch((err) => {
             console.log(err);
         });
