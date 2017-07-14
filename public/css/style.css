@@ -48,6 +48,8 @@ ul
 }
 body{
     background: #38383a;
+    margin: 8px;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 a, h1, p, span{
     color: #44b7d0 !important;
@@ -126,6 +128,20 @@ a {
 
 .content {
     margin-top: 70px;
+}
+
+.info{
+    color: #41b5d0;
+    font-size: 1.2em;
+    margin-bottom: 1em;
+}
+
+#edit, #sub {
+    color: white;
+    background-color: #3eb4cf;
+    border: solid 1px #3eb4cf;
+    border-radius: 4px;
+    padding: 10px;
 }
 
 li > * {

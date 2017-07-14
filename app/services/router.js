@@ -38,6 +38,7 @@ router.get('/', async function (ctx) {
     }
     trues = 0;
   }
+
   for (let a = 0; a < ordersPlaylists.length; a++) {
     const orderPlaylist = await Playlist.findAll({
       where: {

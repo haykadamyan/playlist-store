@@ -60,7 +60,7 @@ const Playlist = sequelize.define('playlists', {
 
 const Order = sequelize.define('orders', {
   userId: {type: Sequelize.INTEGER, unique: 'order'},
-  playlistId: {type: Sequelize.STRING, unique: 'order'}
+  playlistId: {type: Sequelize.INTEGER, unique: 'order'}
 });
 
 const Sale = sequelize.define('sales', {
@@ -75,16 +75,16 @@ const Sale = sequelize.define('sales', {
     }]
 });
 
-// User.sync({force:true});
-// Playlist.sync({force:true});
-// Order.sync({force:true});
-// Sale.sync({force:true});
+User.hasMany(Playlist, {foreignKey: "userId"});
+User.hasMany(Order, {foreignKey: "userId"});
 
-// User.sync();
-// Playlist.sync();
-// Order.sync();
-// Sale.sync();
+Playlist.belongsTo(User, {foreignKey: "userId"});
+Playlist.hasMany(Order, {foreignKey: "playlistId"});
 
+Order.belongsTo(Playlist, {foreignKey: "playlistId"});
+Order.belongsTo(User, {foreignKey: "userId"});
+
+// sequelize.sync();
 sequelize.sync({force:true});
 
 module.exports = {User, Playlist, Order, Sale};

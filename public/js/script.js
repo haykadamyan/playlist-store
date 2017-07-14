@@ -47,7 +47,7 @@ $(document).ready(function () {
     function editClicked () {
         $('#ledgerAdress').remove();
         $('#ledgerTr').append('<input id="ledgerInput" type="text" placeholder="Enter intledger adress here">');
-        $('#ledgerTr').append('<input id="passwordInput" type="password">');
+        $('#ledgerTr').append('<input id="passwordInput" type="password" placeholder="***********">');
         $('#edit').remove();
         $("#editDiv").append('<button id="sub">Save</button>');
         $('#sub').click(saveClicked);
