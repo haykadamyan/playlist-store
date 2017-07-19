@@ -10,6 +10,13 @@ const config = {
         accessType: 'offline',
         scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/youtube'],
         approvalPrompt: 'force'
+    },
+    database: {
+        name: 'playlist-store',
+        username: 'root',
+        password: '',
+        host: 'localhost',
+        dialect: 'mysql'
     }
 };
 

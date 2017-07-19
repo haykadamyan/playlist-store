@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('playlist-store', 'root', '', {
-  host:'localhost',
-  dialect: "mysql"
+const database = require('../../config/config').database;
+
+const sequelize = new Sequelize(database.name, database.username, database.password, {
+  host: database.host,
+  dialect: database.dialect
 });
 
 
