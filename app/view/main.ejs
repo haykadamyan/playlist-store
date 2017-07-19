@@ -28,12 +28,7 @@
                     </li>
                     <% allMyPlaylists.push(playlists[a].dataValues);
                     }
-                    else if(playlists[a].dataValues.status === 'purchased')
-                    { %>
-                    <li>
-                        <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a><span> Purchased</span>
-                    </li>
-                    <% }
+
                     } %>
 
                     <% console.log(sales); for(let a = 0; a < sales.length; a++){ %>
@@ -49,7 +44,7 @@
         <tr>
             <td>
                 <h2>Store</h2>
-                <ul style="clear:both;">
+                <ul>
                     <% for (let a = 0; a < storePlaylists.length; a++) {
                     %>
                     <li>
