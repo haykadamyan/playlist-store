@@ -4,7 +4,6 @@ $(document).ready(function () {
         $.get("/playlist/sell/" + $(this).data('id')).then((data) => {
             $(this).parent().append('<button data-id="'+$(this).data("id")+'" class="dontSell button"><span>Stop selling</span></button>');
             $(this).remove();
-            console.log(data);
         }).catch(function (err) {
             console.log(err);
         });
@@ -25,7 +24,6 @@ $(document).ready(function () {
     function saveClicked(){
         let value1 = $('#ledgerInput').val();
         let value2 = $('#passwordInput').val();
-        console.log(value1+" "+value2);
         if(value1 != '' && value2 != '') {
             $('#error').text('');
             $.get('/ILPAuthenticate', {username: value1, password: value2}).then((response) => {

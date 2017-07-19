@@ -31,7 +31,7 @@
 
                     } %>
 
-                    <% console.log(sales); for(let a = 0; a < sales.length; a++){ %>
+                    <%for(let a = 0; a < sales.length; a++){ %>
                     <li>
                         <a href="/playlist/<%= sales[a].dataValues.id %>"><%= sales[a].dataValues.title %></a>
                         <button data-id='<%= sales[a].dataValues.id %>' class="dontSell button"><span>Stop selling</span>
