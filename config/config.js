@@ -17,7 +17,8 @@ const config = {
         password: '',
         host: 'localhost',
         dialect: 'mysql'
-    }
+    },
+    ILPAddress: 'ilp.tumo.org'
 };
 
 module.exports = config;
