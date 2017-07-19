@@ -26,15 +26,15 @@ router.get('/logout', function (ctx) {
   ctx.redirect('/');
 });
 
+router.get('/', Functions.main);
+
 router.use(async function (ctx, next) {
   if (ctx.isAuthenticated()) {
-    return next()
+    return next();
   } else {
-    ctx.redirect('/')
+    ctx.redirect('/');
   }
 });
-
-router.get('/', Functions.main);
 
 router.get('/userInfo', Functions.userInfo);
 router.get('/ILPAuthenticate', Functions.ILPAuthenticate);
