@@ -12,7 +12,7 @@ $(document).ready(function () {
     $('.buyButton').click(function () {
         $(this).attr('disabled', 'disabled');
         $.get("/playlist/buy/" + $(this).data('id')).then(() => {
-            $(this).parent().append('<span class="purchased"> Purchased </span>');
+            $(this).parent().append('<button style="float:right;" class="button">Purchased</button>');
             $(this).remove();
         }).catch(function (err) {
             console.log('Error buying playlist');

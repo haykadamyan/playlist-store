@@ -12,7 +12,7 @@
                 <h2>My Playlists</h2>
 
                 <ul style="float: left;">
-                    <% var allMyPlaylists = [];
+                    <% 
                     for(let a = 0; a < playlists.length; a++){
                     if (playlists[a].dataValues.status === 'youtube') { %>
                     <li style="width: 400px; height: 35px;">
@@ -20,7 +20,7 @@
                         <button style="float: right;" class="sellButton button" data-id="<%= playlists[a].dataValues.id %>">
                             <span>Sell</span></button>
                     </li>
-                    <% allMyPlaylists.push(playlists[a].dataValues);
+                    <%
                     }
 
                     } %>
@@ -32,6 +32,14 @@
                         </button>
                     </li>
                     <% } %>
+                    <% for(let a = 0; a < purchased.length; a++){
+                        %>
+                    <li>
+                        <a href="/playlist/<%= purchased[a].dataValues.id %>"><%= purchased[a].dataValues.title %></a><button style="float:right;" class="button">Purchased</button>
+                        </button>
+                    </li>
+                    <%
+                        } %>
                 </ul>
             </td>
         </tr>
@@ -43,7 +51,7 @@
                     %>
                     <li>
                         <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
-                        <button data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton button"><span>Buy</span>
+                        <button style="float:right;" data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton button"><span>Buy</span>
                         </button>
                     </li>
                     <% } %>
