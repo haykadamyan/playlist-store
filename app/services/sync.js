@@ -8,7 +8,6 @@ exports.playlists = async function(user){
   "use strict";
   const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, user.accessToken, user.refreshToken);
   const youtubePlaylists = await youtubeAPI.getPlaylists();
-
   for(let i=0;i<youtubePlaylists.items.length;i++){
 
     let item = youtubePlaylists.items[i];
@@ -29,7 +28,8 @@ exports.playlists = async function(user){
       title: item.snippet.title,
       description: item.snippet.description,
       ownerId: user.id,
-      videos: json || null
+      videos: json || null,
+      thumbnailUrl: item.snippet.thumbnails.high.url
     };
     await Playlist.upsert(playlist);
   }

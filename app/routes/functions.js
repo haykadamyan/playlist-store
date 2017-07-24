@@ -89,7 +89,7 @@ exports.showPlaylist = async function (ctx) {
   const videosData = await ctx.state.youtubeAPI.getPlaylistItems(playlist.youtubeId);
 
   const videos = videosData.items.map((item) => {
-    return item.snippet.title;
+    return item;
   });
 
   await ctx.render('playlist', {title: 'One playlist', playlist: plainPlaylist, videos: videos});

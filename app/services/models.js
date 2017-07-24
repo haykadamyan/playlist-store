@@ -32,6 +32,7 @@ const Playlist = sequelize.define('playlists', {
     type:Sequelize.STRING,
     unique:true
   },
+  thumbnailUrl: Sequelize.STRING,
   title: Sequelize.STRING,
   description: Sequelize.TEXT,
   ownerId : {

@@ -8,6 +8,35 @@
             li{
                 color: #44b7d0 !important;
             }
+            ol li
+            {
+                border: solid 1px;
+                margin-bottom: 2em;
+                padding: 1em;
+                height: 53%;
+                position: relative;
+            }
+            ol li img
+            {
+                display: block;
+                width: 480px;
+                height: 360px;
+            }
+            .left
+            {
+                float: left;
+            }
+            .right
+            {
+                display: block;
+                margin: auto;
+                position: absolute;
+                margin-top: 16%;
+                margin-left: 26em;
+                font-size: 1.2em;
+                height: 50%;
+                font-weight: bold;
+            }
         </style>
     </head>
     <body>
@@ -16,11 +45,15 @@
 
                 <ol>
                     <% for(let i = 0; i<videos.length; i++) { %>
-                        <li><%= videos[i] %></li>
+                        <li><a href="https://www.youtube.com/watch?v=<%= videos[i].contentDetails.videoId%>" class='left'><img src="<%= videos[i].snippet.thumbnails.high.url%>"></a>
+                        <a href="https://www.youtube.com/watch?v=<%= videos[i].contentDetails.videoId%>" class='right'><%= videos[i].snippet.title %></a>
+                        </li>
+                            
                     <% } %>
                 </ol>
 
-
+<!-- $(window).scroll(function(event){
+   var st = $(this).scrollTop(); -->
                 <%- include('footer')%>
 
         </div>

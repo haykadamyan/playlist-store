@@ -2,6 +2,29 @@
 <head>
     <title>Main Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style type="text/css">
+        .content ul li {
+            border: solid 1px;
+            width: 100% !important;
+            position: relative;
+            height: 100% !important;
+            padding: 1em;
+            color: #3fb5cf;
+            margin-bottom: 1em;
+        }
+        .content ul li a {
+            margin-left: 1em;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .button
+        {
+                float: right;
+    right: 1em;
+    position: absolute;
+    top: 1em;
+        }
+    </style>
 </head>
 <body>
 <%- include('header') %>
@@ -16,6 +39,7 @@
                     for(let a = 0; a < playlists.length; a++){
                     if (playlists[a].dataValues.status === 'youtube') { %>
                     <li style="width: 400px; height: 35px;">
+                        <a href="/playlist/<%= playlists[a].dataValues.id %>"><img src="<%= playlists[a].dataValues.thumbnailUrl %>"></a>
                         <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a>
                         <button style="float: right;" class="sellButton button" data-id="<%= playlists[a].dataValues.id %>">
                             <span>Sell</span></button>
@@ -50,6 +74,7 @@
                     <% for (let a = 0; a < storePlaylists.length; a++) {
                     %>
                     <li>
+                        <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><img src="<%= storePlaylists[a].dataValues.thumbnailUrl%>"></a>
                         <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
                         <button style="float:right;" data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton button"><span>Buy</span>
                         </button>

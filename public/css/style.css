@@ -56,7 +56,7 @@ a, h1, p, span{
 }
 
 footer{
-    position: absolute;
+    position: relative;
     bottom: 1em;
     width: 100%;
 }
