@@ -8,7 +8,7 @@ const path = require('path');
 
 const server = new Koa();
 
-const router = require("./services/router.js");
+const router = require("./routes/routes.js");
 const passport = require('./services/passport');
 const config = require('../config/config');
 const YoutubeAPI = require('./services/youtube');
