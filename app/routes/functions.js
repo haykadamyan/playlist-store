@@ -1,7 +1,15 @@
 'use strict';
 
+const Sync = require('../services/sync');
+const models = require('../services/models');
+const pay = require('../services/pay');
+
+const Playlist = models.Playlist;
+const Sale = models.Sale;
+const User = models.User;
+const Order = models.Order;
+
 exports.main = async function (ctx) {
-  conole.log('armen');
   if (!ctx.isAuthenticated()) {
     await ctx.render('login');
     return false;
@@ -13,6 +21,7 @@ exports.main = async function (ctx) {
   const purchasedPlaylists = await Playlist.findAll({where: {status: 'purchased', ownerId: ctx.state.user.id}});
   const ordersPlaylists = await Order.findAll();
   let orderPlaylistsNames = [];
+  let orderNames = [];
   let trues = 0;
   for (let a = 0; a < storePlaylists.length; a++) {
     for (let b = 0; b < purchasedPlaylists.length; b++) {
@@ -25,23 +34,36 @@ exports.main = async function (ctx) {
     }
     trues = 0;
   }
+
   for (let a = 0; a < ordersPlaylists.length; a++) {
-    const orderPlaylist = await Playlist.findAll({
+    const orderPlaylist = await Playlist.findOne({
       where: {
         id: ordersPlaylists[a].playlistId,
         ownerId: ctx.state.user.id
       }
     });
-    orderPlaylistsNames.push(orderPlaylist);
+    if (orderPlaylist) {
+      const orderUser = await User.findOne({
+        where:{
+          id: ordersPlaylists[a].get('userId')
+        }
+      });
+      if (orderUser) {
+        orderNames.push(orderUser.get('displayName'));
+      }
+      orderPlaylistsNames.push(orderPlaylist);
+    }
   }
 
   const mySales = await Playlist.findAll({where: {ownerId: ctx.state.user.id, status: 'for sale'}});
+
   await ctx.render('main', {
     title: "Playlist Store",
     playlists: playlists,
     storePlaylists: storePlaylists,
     orders: orderPlaylistsNames,
-    sales: mySales
+    sales: mySales,
+    orderUserNames: orderNames
   });
 };
 
