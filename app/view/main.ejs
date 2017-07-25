@@ -13,16 +13,24 @@
             margin-bottom: 1em;
         }
         .content ul li a {
-            margin-left: 1em;
             font-weight: bold;
             font-size: 1.2em;
         }
         .button
         {
-                float: right;
-    right: 1em;
-    position: absolute;
-    top: 1em;
+            float: right;
+            right: 1em;
+            position: absolute;
+            top: 1em;
+        }
+        .content ul li a img {
+            width: 330px;
+        }
+        table{
+            width: 100%;
+        }
+        .title{
+            margin-left: 0.5em;
         }
     </style>
 </head>
@@ -34,13 +42,13 @@
             <td>
                 <h2>My Playlists</h2>
 
-                <ul style="float: left;">
+                <ul>
                     <% 
                     for(let a = 0; a < playlists.length; a++){
                     if (playlists[a].dataValues.status === 'youtube') { %>
                     <li style="width: 400px; height: 35px;">
                         <a href="/playlist/<%= playlists[a].dataValues.id %>"><img src="<%= playlists[a].dataValues.thumbnailUrl %>"></a>
-                        <a href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a>
+                        <a class="title" href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a>
                         <button style="float: right;" class="sellButton button" data-id="<%= playlists[a].dataValues.id %>">
                             <span>Sell</span></button>
                     </li>
@@ -51,7 +59,8 @@
 
                     <%for(let a = 0; a < sales.length; a++){ %>
                     <li>
-                        <a href="/playlist/<%= sales[a].dataValues.id %>"><%= sales[a].dataValues.title %></a>
+                        <a href="/playlist/<%= sales[a].dataValues.id %>"><img src="<%=sales[a].dataValues.thumbnailUrl %>"></a>
+                        <a class="title" href="/playlist/<%= sales[a].dataValues.id %>"><%= sales[a].dataValues.title %></a>
                         <button data-id='<%= sales[a].dataValues.id %>' class="dontSell button"><span>Stop selling</span>
                         </button>
                     </li>
@@ -59,7 +68,8 @@
                     <% for(let a = 0; a < purchased.length; a++){
                         %>
                     <li>
-                        <a href="/playlist/<%= purchased[a].dataValues.id %>"><%= purchased[a].dataValues.title %></a><button style="float:right;" class="button">Purchased</button>
+                        <a href="/playlist/<%= purchased[a].dataValues.id %>"><img src="<%=purchased[a].dataValues.thumbnailUrl %>"></a>
+                        <a class="title" href="/playlist/<%= purchased[a].dataValues.id %>"><%= purchased[a].dataValues.title %></a><button style="float:right;" class="button">Purchased</button>
                         </button>
                     </li>
                     <%
@@ -75,7 +85,7 @@
                     %>
                     <li>
                         <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><img src="<%= storePlaylists[a].dataValues.thumbnailUrl%>"></a>
-                        <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
+                        <a class="title" href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
                         <button style="float:right;" data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton button"><span>Buy</span>
                         </button>
                     </li>
