@@ -32,6 +32,17 @@
         .title{
             margin-left: 0.5em;
         }
+        #pricePl
+        {
+            color: white;
+            background-color: #3eb4cf;
+            border: solid 1px #3eb4cf;
+            border-radius: 4px;
+            padding: 10px;
+            right: 10em;
+            position: absolute;
+            top: 1em;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +97,7 @@
                     <li>
                         <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><img src="<%= storePlaylists[a].dataValues.thumbnailUrl%>"></a>
                         <a class="title" href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
+                        <span style="right: 9em;width: 19%;" class="button">This playlist costs <%= storePlaylists[a].dataValues.price %>$</span>
                         <button style="float:right;" data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton button"><span>Buy</span>
                         </button>
                     </li>

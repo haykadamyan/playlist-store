@@ -41,7 +41,7 @@ router.get('/ILPAuthenticate', Functions.ILPAuthenticate);
 
 router.get('/playlist/:id', Functions.showPlaylist);
 router.get('/playlist/buy/:id', Functions.buyPlaylist);
-router.get('/playlist/sell/:id', Functions.sellPlaylist);
+router.get('/playlist/sell/:id/:price', Functions.sellPlaylist);
 router.get('/dontSell', Functions.dontSell);
 
 

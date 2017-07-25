@@ -103,13 +103,13 @@ exports.buyPlaylist = async function (ctx) {
 
   const user = await User.findById(plainPlaylist.ownerId);
 
-  await pay(
+  /*await pay(
     ctx.state.user.ILPUsername,
     ctx.state.user.ILPPassword,
     user.get('ILPUsername'),
     plainPlaylist.price,
     'Payment for youtube playlist: ' + infoPlaylist.get('title')
-  );
+  );*/
 
   //add record in orders table
   let playlist = {
@@ -144,6 +144,7 @@ exports.buyPlaylist = async function (ctx) {
 
 exports.sellPlaylist = async function (ctx) {
   const id = parseInt(ctx.params.id);
+  const playlistPrice = Number(ctx.params.price);
   const playlist = await Playlist.findById(id);
   if (playlist.get('ownerId') !== ctx.state.user.id) {
     ctx.response.status = 403;
@@ -156,8 +157,8 @@ exports.sellPlaylist = async function (ctx) {
   });
 
   const json = JSON.stringify(videoIds);
-
-  await playlist.update({status: "for sale", videos: json});
+  console.log("\n\n\n\n\n\n\n\n\n\n\n\n"+playlistPrice+"\n\n\n\n\n\n\n\n\n\n\n\n");
+  await playlist.update({status: "for sale", videos: json, price: playlistPrice});
 
   await Sale.upsert({playlistId: id});
 

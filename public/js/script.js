@@ -1,13 +1,5 @@
 $(document).ready(function () {
-    $('.sellButton').click(function () {
-      $(this).attr('disabled', 'disabled');
-        $.get("/playlist/sell/" + $(this).data('id')).then((data) => {
-            $(this).parent().append('<button data-id="'+$(this).data("id")+'" class="dontSell button"><span>Stop selling</span></button>');
-            $(this).remove();
-        }).catch(function (err) {
-            console.log(err);
-        });
-    });
+    $('.sellButton').click(sellClick);
 
     $('.buyButton').click(function () {
         $(this).attr('disabled', 'disabled');
@@ -49,6 +41,29 @@ $(document).ready(function () {
         $('#edit').remove();
         $("#editDiv").append('<button id="sub">Save</button>');
         $('#sub').click(saveClicked);
+    }
+    function sellClick(){
+        $(this).attr('disabled', 'disabled');
+        $(this).parent().append('<input id="pricePl" type="text" placeholder="Write your playlist price">');
+        $(this).parent().append('<button id="send" class="button">Send</button>');
+        window.playlistId = $(this).data('id');
+        $(this).remove();
+        $("#send").click(sendClick);
+    }
+    function sendClick(){
+        window.pricePl = $("#pricePl").val();
+        if(pricePl == "")
+        {
+            pricePl = 0.99;
+        }
+        $.get("/playlist/sell/" + playlistId + "/"+ pricePl).then((data) => {
+            $(this).parent().append('<button data-id="'+$(this).data("id")+'" class="dontSell button"><span>Stop selling</span></button>');
+            $("#pricePl").remove();
+            $("#send").remove();
+        }).catch(function (err) {
+            console.log(err);
+        });
+        $('.sellButton').click(sellClick);
     }
     $(".dontSell").click(function(){
         $.get('/dontSell', {playlistId: $(this).data('id')}).then((response) => {

@@ -144,3 +144,15 @@ button{
 li > * {
     vertical-align: middle;
 }
+::-webkit-input-placeholder {
+    color: white;
+}
+::-moz-placeholder {
+    color: white;
+}
+:-ms-input-placeholder {
+    color: white;
+}
+:-moz-placeholder {
+    color: white;
+}
