@@ -2,33 +2,32 @@
     float: right;
 }
 
-.menu ul li{
-    border:solid 1px;
+.menu ul li {
+    border: solid 1px;
     padding: 1em;
     display: inline-block;
-    margin-right:1em;
+    margin-right: 1em;
 }
 
-.logo, .nameWeb
-{
-    display:inline-block;
+.logo, .nameWeb {
+    display: inline-block;
 }
 
-.logo img{
-    width:14em;
+.logo img {
+    width: 14em;
 }
 
-.menu{
+.menu {
     float: right;
 }
 
-.menu li{
+.menu li {
     display: inline-block;
-    margin-right:1em;
+    margin-right: 1em;
     padding: 1em;
 }
 
-.container{
+.container {
     width: 75%;
     margin: auto;
     height: 99%;
@@ -42,33 +41,33 @@
     font-size: 1.05em
 }
 
-ul
-{
+ul {
     list-style-type: none;
 }
-body{
+
+body {
     background: #38383a;
     margin: 8px;
-    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
-a, h1, p, span{
+
+a, h1, p, span {
     color: #44b7d0 !important;
 }
 
-footer{
+footer {
     position: relative;
     bottom: 1em;
     width: 100%;
 }
 
-h2{
-    color:rgb(255, 255, 255);
+h2 {
+    color: rgb(255, 255, 255);
 }
 
-button{
+button {
     background-color: #fffaff;
 }
-
 
 .button {
     display: inline-block;
@@ -84,15 +83,18 @@ button{
     cursor: pointer;
     margin: 5px;
 }
-.content ul li{
+
+.content ul li {
     margin: 1em;
     width: 400px;
     height: 35px;
 }
-.content ul{
+
+.content ul {
 
     margin-top: 2em;
 }
+
 .button span {
     cursor: pointer;
     display: inline-block;
@@ -120,14 +122,14 @@ button{
 }
 
 .dontSell {
-    float:right;
+    float: right;
 }
 
 .content {
     margin-top: 70px;
 }
 
-.info{
+.info {
     color: #41b5d0;
     font-size: 1.2em;
     margin-bottom: 1em;
@@ -144,15 +146,19 @@ button{
 li > * {
     vertical-align: middle;
 }
+
 ::-webkit-input-placeholder {
     color: white;
 }
+
 ::-moz-placeholder {
     color: white;
 }
+
 :-ms-input-placeholder {
     color: white;
 }
+
 :-moz-placeholder {
     color: white;
 }

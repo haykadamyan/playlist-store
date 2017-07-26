@@ -1,68 +1,68 @@
 <html>
-    <head>
-        <style type="text/css">
-            .content div ul {
-                display: inline-block;
-                list-style-type:none;
-            }
-            li{
-                color: #44b7d0 !important;
-            }
-            ol li
-            {
-                border: solid 1px;
-                margin-bottom: 2em;
-                padding: 1em;
-                height: 33%;
-                position: relative;
-            }
-            ol li img
-            {
-                display: block;
-                width: 330px;
-            }
-            .left
-            {
-                float: left;
-            }
-            .right
-            {
-                display: block;
-                margin: auto;
-                position: absolute;
-                margin-top: 7%;
-                margin-left: 18em;
-                font-size: 1.2em;
-                height: 50%;
-                font-weight: bold;
-            }
-            li a
-            {
-                text-decoration: none;
-            }
-            li a:hover
-            {
-                text-decoration: underline;
-            }
-        </style>
-    </head>
-    <body>
-            <%- include('header') %>
-                <h1><%= playlist.title %></h1>
+<head>
+    <style type="text/css">
+        .content div ul {
+            display: inline-block;
+            list-style-type: none;
+        }
 
-                <ol>
-                    <% for(let i = 0; i<videos.length; i++) { %>
-                        <li><a href="https://www.youtube.com/watch?v=<%= videos[i].contentDetails.videoId%>" class='left'><img src="<%= videos[i].snippet.thumbnails.high.url%>"></a>
-                        <a href="https://www.youtube.com/watch?v=<%= videos[i].contentDetails.videoId%>" class='right'><%= videos[i].snippet.title %></a>
-                        </li>
-                            
-                    <% } %>
-                </ol>
+        li {
+            color: #44b7d0 !important;
+        }
 
-<!-- $(window).scroll(function(event){
-   var st = $(this).scrollTop(); -->
-                <%- include('footer')%>
+        ol li {
+            border: solid 1px;
+            margin-bottom: 2em;
+            padding: 1em;
+            height: 33%;
+            position: relative;
+        }
 
-        </div>
-    </body>
+        ol li img {
+            display: block;
+            width: 330px;
+        }
+
+        .left {
+            float: left;
+        }
+
+        .right {
+            display: block;
+            margin: auto;
+            position: absolute;
+            margin-top: 7%;
+            margin-left: 18em;
+            font-size: 1.2em;
+            height: 50%;
+            font-weight: bold;
+        }
+
+        li a {
+            text-decoration: none;
+        }
+
+        li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<%- include('header') %>
+<h1><%= playlist.title %></h1>
+
+<ol>
+    <% for(let i = 0; i < videos.length; i++) { %>
+    <li><a href="https://www.youtube.com/watch?v=<%= videos[i].contentDetails.videoId %>" class='left'><img
+                    src="<%= videos[i].snippet.thumbnails.high.url %>"></a>
+        <a href="https://www.youtube.com/watch?v=<%= videos[i].contentDetails.videoId %>"
+           class='right'><%= videos[i].snippet.title %></a>
+    </li>
+
+    <% } %>
+</ol>
+<%- include('footer') %>
+
+</div>
+</body>
 </html>

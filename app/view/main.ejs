@@ -1,7 +1,8 @@
 <html>
 <head>
     <title>Main Page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <style type="text/css">
         .content ul li {
             border: solid 1px;
@@ -12,28 +13,32 @@
             color: #3fb5cf;
             margin-bottom: 1em;
         }
+
         .content ul li a {
             font-weight: bold;
             font-size: 1.2em;
         }
-        .button
-        {
+
+        .button {
             float: right;
             right: 1em;
             position: absolute;
             top: 1em;
         }
+
         .content ul li a img {
             width: 330px;
         }
-        table{
+
+        table {
             width: 100%;
         }
-        .title{
+
+        .title {
             margin-left: 0.5em;
         }
-        #pricePl
-        {
+
+        #pricePl {
             color: white;
             background-color: #3eb4cf;
             border: solid 1px #3eb4cf;
@@ -49,80 +54,94 @@
 <%- include('header') %>
 <table>
     <tbody>
-        <tr>
-            <td>
-                <h2>My Playlists</h2>
+    <tr>
+        <td>
+            <h2>My Playlists</h2>
 
-                <ul>
-                    <% 
-                    for(let a = 0; a < playlists.length; a++){
-                    if (playlists[a].dataValues.status === 'youtube') { %>
+            <ul>
+                <% //Insert user all playlists with their thumbnails for sell
+                for(let a = 0; a < playlists.length; a++){
+                if (playlists[a].dataValues.status === 'youtube') { %>
                     <li style="width: 400px; height: 35px;">
-                        <a href="/playlist/<%= playlists[a].dataValues.id %>"><img src="<%= playlists[a].dataValues.thumbnailUrl %>"></a>
-                        <a class="title" href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a>
+                        <a href="/playlist/<%= playlists[a].dataValues.id %>"><img
+                                    src="<%= playlists[a].dataValues.thumbnailUrl %>"></a>
+                        <a class="title"
+                           href="/playlist/<%= playlists[a].dataValues.id %>"><%= playlists[a].dataValues.title %></a>
                         <button style="float: right;" class="sellButton button" data-id="<%= playlists[a].dataValues.id %>">
                             <span>Sell</span></button>
                     </li>
-                    <%
-                    }
+                <%
+                }
 
-                    } %>
+                } %>
 
-                    <%for(let a = 0; a < sales.length; a++){ %>
+                <% //User can see all playlist then he sell and can stop selling
+                for(let a = 0; a < sales.length; a++){ %>
                     <li>
-                        <a href="/playlist/<%= sales[a].dataValues.id %>"><img src="<%=sales[a].dataValues.thumbnailUrl %>"></a>
+                        <a href="/playlist/<%= sales[a].dataValues.id %>"><img
+                                    src="<%= sales[a].dataValues.thumbnailUrl %>"></a>
                         <a class="title" href="/playlist/<%= sales[a].dataValues.id %>"><%= sales[a].dataValues.title %></a>
                         <button data-id='<%= sales[a].dataValues.id %>' class="dontSell button"><span>Stop selling</span>
                         </button>
                     </li>
-                    <% } %>
-                    <% for(let a = 0; a < purchased.length; a++){
-                        %>
+                <% } %>
+                <%  //Here you can see all purchased playlists
+                    for(let a = 0; a < purchased.length; a++){
+                %>
                     <li>
-                        <a href="/playlist/<%= purchased[a].dataValues.id %>"><img src="<%=purchased[a].dataValues.thumbnailUrl %>"></a>
-                        <a class="title" href="/playlist/<%= purchased[a].dataValues.id %>"><%= purchased[a].dataValues.title %></a><button style="float:right;" class="button">Purchased</button>
+                        <a href="/playlist/<%= purchased[a].dataValues.id %>"><img
+                                    src="<%= purchased[a].dataValues.thumbnailUrl %>"></a>
+                        <a class="title"
+                           href="/playlist/<%= purchased[a].dataValues.id %>"><%= purchased[a].dataValues.title %></a>
+                        <button style="float:right;" class="button">Purchased</button>
                         </button>
                     </li>
-                    <%
-                        } %>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Store</h2>
-                <ul>
-                    <% for (let a = 0; a < storePlaylists.length; a++) {
-                    %>
+                <%
+                } %>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h2>Store</h2>
+            <ul>
+                <% //Here User can see all playlist those selling
+                    for (let a = 0; a < storePlaylists.length; a++) {
+                %>
                     <li>
-                        <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><img src="<%= storePlaylists[a].dataValues.thumbnailUrl%>"></a>
-                        <a class="title" href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
-                        <span style="right: 9em;width: 19%;" class="button">This playlist costs <%= storePlaylists[a].dataValues.price %>$</span>
-                        <button style="float:right;" data-id='<%= storePlaylists[a].dataValues.id %>' class="buyButton button"><span>Buy</span>
+                        <a href="/playlist/<%= storePlaylists[a].dataValues.id %>"><img
+                                    src="<%= storePlaylists[a].dataValues.thumbnailUrl %>"></a>
+                        <a class="title"
+                           href="/playlist/<%= storePlaylists[a].dataValues.id %>"><%= storePlaylists[a].dataValues.title %></a>
+                        <span style="right: 9em;width: 19%;"
+                              class="button">This playlist costs <%= storePlaylists[a].dataValues.price %>$</span>
+                        <button style="float:right;" data-id='<%= storePlaylists[a].dataValues.id %>'
+                                class="buyButton button"><span>Buy</span>
                         </button>
                     </li>
-                    <% } %>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h2>Bought From Me</h2>
-                <ul>
-                    <%
-                    for(let a = 0; a < orders.length; a++) { %>
-                        <li>
-                                <span><%= orderUserNames[a] %> bought </span>
-                                <a href="/playlist/<%= orders[a].dataValues.id %>"><%= orders[a].dataValues.title %></a>
-                                <span>playlist</span>
-                        </li>
-                    <% } %>
-                </ul>
-            </td>
-        </tr>
+                <% } %>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h2>Bought From Me</h2>
+            <ul>
+                <% //Here show all playlist those bought from me
+                for(let a = 0; a < orders.length; a++) { %>
+                <li>
+                    <span><%= orderUserNames[a] %> bought </span>
+                    <a href="/playlist/<%= orders[a].dataValues.id %>"><%= orders[a].dataValues.title %></a>
+                    <span>playlist</span>
+                </li>
+                <% } %>
+            </ul>
+        </td>
+    </tr>
     </tbody>
 </table>
 <%- include('footer') %>
 <%- include('scripts') %>
 </body>
 </html>
+
