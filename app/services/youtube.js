@@ -1,6 +1,6 @@
 const google = require('googleapis');
 const promise = require('bluebird');
-var playlistId, channelId;
+
 let YoutubeAPI = function YoutubeAPI(clientID, secret, redirect, accessToken, refreshToken) {
   this.OAuth2Client = new google.auth.OAuth2(
     clientID,
@@ -32,7 +32,7 @@ YoutubeAPI.prototype.getPlaylists = function () {
         mine: true,
         maxResults: 50
       },
-      function (err, data, response) {
+      function (err, data) {
         if (err) {
           console.log("error: " + err);
         }
@@ -55,7 +55,7 @@ YoutubeAPI.prototype.getPlaylistItems = function (id) {
         playlistId: id,
         maxResults: 50
       },
-      function (err, data, response) {
+      function (err, data) {
         if (err) {
           console.log("error: " + err);
           return reject(err);
@@ -79,7 +79,7 @@ YoutubeAPI.prototype.createPlaylist = function (title, description) {
           }
         }
       },
-      function (err, data, response) {
+      function (err, data) {
         if (err) {
           console.log("error: " + err);
           return reject(err);
@@ -104,7 +104,7 @@ YoutubeAPI.prototype.addVideoToPlaylist = function (playlistId, videoId) {
           }
         }
       }
-    }, function (err, data, response) {
+    }, function (err, data) {
       if (err) {
         console.log("error: " + err);
         return reject(err);

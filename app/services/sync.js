@@ -8,6 +8,7 @@ exports.playlists = async function(user){
   "use strict";
   const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, user.accessToken, user.refreshToken);
   const youtubePlaylists = await youtubeAPI.getPlaylists();
+
   for(let i=0;i<youtubePlaylists.items.length;i++){
 
     let item = youtubePlaylists.items[i];

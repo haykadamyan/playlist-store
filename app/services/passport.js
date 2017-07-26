@@ -16,6 +16,7 @@ passport.use(new GoogleStrategy({
       idToken: params.id_token,
       accessToken: accessToken
     };
+
     if (refreshToken) {
       user.refreshToken = refreshToken;
     }
@@ -40,11 +41,9 @@ passport.deserializeUser(async function (id, done) {
     } else {
       done(null, null);
     }
-
   } catch(err){
     done(err, null);
   }
-
 });
 
 module.exports = passport;
