@@ -20,7 +20,6 @@ passport.use(new GoogleStrategy({
     if (refreshToken) {
       user.refreshToken = refreshToken;
     }
-
     models.User.upsert(user)
       .then(function () {
         return done(null, user);

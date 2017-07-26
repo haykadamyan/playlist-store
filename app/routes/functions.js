@@ -44,7 +44,7 @@ exports.main = async function (ctx) {
     });
     if (orderPlaylist) {
       const orderUser = await User.findOne({
-        where:{
+        where: {
           id: ordersPlaylists[a].get('userId')
         }
       });
@@ -103,13 +103,13 @@ exports.buyPlaylist = async function (ctx) {
 
   const user = await User.findById(plainPlaylist.ownerId);
 
-  /*await pay(
+  await pay(
     ctx.state.user.ILPUsername,
     ctx.state.user.ILPPassword,
     user.get('ILPUsername'),
     plainPlaylist.price,
     'Payment for youtube playlist: ' + infoPlaylist.get('title')
-  );*/
+  );
 
   //add record in orders table
   let playlist = {
@@ -157,7 +157,6 @@ exports.sellPlaylist = async function (ctx) {
   });
 
   const json = JSON.stringify(videoIds);
-  console.log("\n\n\n\n\n\n\n\n\n\n\n\n"+playlistPrice+"\n\n\n\n\n\n\n\n\n\n\n\n");
   await playlist.update({status: "for sale", videos: json, price: playlistPrice});
 
   await Sale.upsert({playlistId: id});

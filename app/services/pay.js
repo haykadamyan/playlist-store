@@ -6,7 +6,10 @@ const FiveBellsPlugin = require('ilp-plugin-bells');
 const ilpAddress = require('../../config/config').ILPAddress;
 
 async function pay(sender, password, receiver, amount, message) {
-  const plugin = new FiveBellsPlugin({account:"https://" + ilpAddress + "/ledger/accounts/" + sender , password: password});
+  const plugin = new FiveBellsPlugin({
+    account: "https://" + ilpAddress + "/ledger/accounts/" + sender,
+    password: password
+  });
 
   await plugin.connect();
   console.log('Connected');

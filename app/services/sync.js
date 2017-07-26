@@ -4,16 +4,16 @@ const models = require('./models.js');
 
 const Playlist = models.Playlist;
 
-exports.playlists = async function(user){
+exports.playlists = async function (user) {
   "use strict";
   const youtubeAPI = new YoutubeAPI(config.google.clientID, config.google.clientSecret, config.google.callbackURL, user.accessToken, user.refreshToken);
   const youtubePlaylists = await youtubeAPI.getPlaylists();
 
-  for(let i=0;i<youtubePlaylists.items.length;i++){
+  for (let i = 0; i < youtubePlaylists.items.length; i++) {
 
     let item = youtubePlaylists.items[i];
 
-    const playlistInDB = await Playlist.findOne({where:{youtubeId:item.id}});
+    const playlistInDB = await Playlist.findOne({where: {youtubeId: item.id}});
 
     if (playlistInDB && playlistInDB.get('status') === 'for sale') {
       const videos = await youtubeAPI.getPlaylistItems(item.id);
@@ -34,6 +34,5 @@ exports.playlists = async function(user){
     };
     await Playlist.upsert(playlist);
   }
-
   return youtubePlaylists;
 };

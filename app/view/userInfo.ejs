@@ -1,38 +1,37 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
-              integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-        <style>
-            input[type='text'], input[type='password']
-            {
-                color: white;
-                background-color: #3eb4cf;
-                border: solid 1px #3eb4cf;
-                border-radius: 4px;
-                padding: 10px;
-                margin-right: 1em;
-            }
-        </style>
-    </head>
-    <body>
-        <%- include('header') %>
-            <div class="info">
-                <b>User Name :</b> <%= user.displayName %>
-            </div>
-            <div id="ledgerTr" class="info">
-                <b>InterLedger :</b>
-                <% if(user.ILPUserName){ %>
-                    <span id="ledgerAdress">Username : <%= user.ILPUserName %></span>
-                <% }else {%>
-                    <span id="ledgerAdress">Enter interledger username here</span>
-                <% } %>
-                <span id="error"></span>
-            </div>
-            <div id="editDiv">
-                <button id="edit">Edit</button>
-            </div>
-        <%- include('footer')%>
-    </div>
-    <%- include('scripts') %>
-    </body>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
+        input[type='text'], input[type='password'] {
+            color: white;
+            background-color: #3eb4cf;
+            border: solid 1px #3eb4cf;
+            border-radius: 4px;
+            padding: 10px;
+            margin-right: 1em;
+        }
+    </style>
+</head>
+<body>
+<%- include('header') %>
+<div class="info">
+    <b>User Name :</b> <%= user.displayName %>
+</div>
+<div id="ledgerTr" class="info">
+    <b>InterLedger :</b>
+    <% if(user.ILPUserName){ %>
+    <span id="ledgerAdress">Username : <%= user.ILPUserName %></span>
+    <% }else { %>
+    <span id="ledgerAdress">Enter interledger username here</span>
+    <% } %>
+    <span id="error"></span>
+</div>
+<div id="editDiv">
+    <button id="edit">Edit</button>
+</div>
+<%- include('footer') %>
+</div>
+<%- include('scripts') %>
+</body>
 </html>

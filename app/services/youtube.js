@@ -13,7 +13,6 @@ let YoutubeAPI = function YoutubeAPI(clientID, secret, redirect, accessToken, re
     refresh_token: refreshToken
   });
 
-
   this.youtube = google.youtube({
     version: 'v3',
     auth: this.OAuth2Client
@@ -24,7 +23,6 @@ let YoutubeAPI = function YoutubeAPI(clientID, secret, redirect, accessToken, re
 
 YoutubeAPI.prototype.getPlaylists = function () {
   "use strict";
-
   return new Promise((resolve, reject) => {
     this.youtube.playlists.list(
       {
@@ -44,7 +42,6 @@ YoutubeAPI.prototype.getPlaylists = function () {
       }
     );
   });
-
 };
 
 YoutubeAPI.prototype.getPlaylistItems = function (id) {
@@ -89,7 +86,6 @@ YoutubeAPI.prototype.createPlaylist = function (title, description) {
   });
 };
 
-
 YoutubeAPI.prototype.addVideoToPlaylist = function (playlistId, videoId) {
   "use strict";
   return new Promise((resolve, reject) => {
@@ -111,7 +107,7 @@ YoutubeAPI.prototype.addVideoToPlaylist = function (playlistId, videoId) {
       }
       return resolve(data);
     });
-  });
+  })
 };
 
 

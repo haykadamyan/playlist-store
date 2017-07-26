@@ -3,7 +3,7 @@ const sequelize = require('./database');
 
 const User = sequelize.define('users', {
   displayName: {
-   type:Sequelize.STRING
+    type: Sequelize.STRING
   },
   accessToken: {
     type: Sequelize.STRING
@@ -16,7 +16,7 @@ const User = sequelize.define('users', {
   },
   googleId: {
     type: Sequelize.STRING,
-    unique:true
+    unique: true
   },
   ILPUsername: {
     type: Sequelize.STRING,
@@ -28,27 +28,27 @@ const User = sequelize.define('users', {
 });
 
 const Playlist = sequelize.define('playlists', {
-  youtubeId :{
-    type:Sequelize.STRING,
-    unique:true
+  youtubeId: {
+    type: Sequelize.STRING,
+    unique: true
   },
   thumbnailUrl: Sequelize.STRING,
   title: Sequelize.STRING,
   description: Sequelize.TEXT,
-  ownerId : {
+  ownerId: {
     type: Sequelize.INTEGER,
     unique: 'purchase'
   },
   status: {
-    type:Sequelize.STRING,
+    type: Sequelize.STRING,
     defaultValue: 'youtube'
   },
   deleted: {
-    type:Sequelize.BOOLEAN,
-    defaultValue:false
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   },
   videos: Sequelize.TEXT,
-  originalId:{
+  originalId: {
     type: Sequelize.INTEGER,
     defaultValue: null,
     unique: 'purchase'
@@ -68,7 +68,7 @@ const Sale = sequelize.define('sales', {
   playlistId: {
     type: Sequelize.INTEGER
   }
-},
+  },
   {
     indexes: [{
       unique: true,
@@ -86,6 +86,6 @@ Order.belongsTo(Playlist, {foreignKey: "playlistId"});
 Order.belongsTo(User, {foreignKey: "userId"});
 
 // sequelize.sync();
-sequelize.sync({force:true});
+sequelize.sync({force: true});
 
 module.exports = {User, Playlist, Order, Sale};
