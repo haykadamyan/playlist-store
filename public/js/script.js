@@ -10,6 +10,10 @@ $(document).ready(function () {
     }).catch(function (err) {
       console.log('Error buying playlist');
       console.log(err.statusText);
+      if(err.responseJSON.err == "ILP username and ILP password don't set")
+      {
+        $(".container").prepend('<div class="alert alert-warning"><strong>Warning !</strong> You don\'t set your ilp username and ilp password</div>');
+      }
     });
   });
 
@@ -67,6 +71,10 @@ $(document).ready(function () {
       $("#send").remove();
     }).catch(function (err) {
       console.log(err);
+      if(err.responseJSON.err == "ILP username and ILP password don't set")
+      {
+          $(".container").prepend('<div class="alert alert-warning"><strong>Warning !</strong> You don\'t set your ilp username and ilp password</div>');
+      }
     });
     $('.sellButton').click(sellClick);
   }

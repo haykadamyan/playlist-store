@@ -102,14 +102,22 @@ exports.buyPlaylist = async function (ctx) {
   const plainPlaylist = infoPlaylist.get({plain: true});
 
   const user = await User.findById(plainPlaylist.ownerId);
-
-  await pay(
-    ctx.state.user.ILPUsername,
-    ctx.state.user.ILPPassword,
-    user.get('ILPUsername'),
-    plainPlaylist.price,
-    'Payment for youtube playlist: ' + infoPlaylist.get('title')
-  );
+  if(ctx.state.user.ILPUsername && ctx.state.user.ILPPassword)
+  {
+    await pay(
+      ctx.state.user.ILPUsername,
+      ctx.state.user.ILPPassword,
+      user.get('ILPUsername'),
+      plainPlaylist.price,
+      'Payment for youtube playlist: ' + infoPlaylist.get('title')
+    );
+  }
+  else
+  {
+      ctx.response.status = 403;
+      ctx.response.body = {status: 'failed', err: "ILP username and ILP password don't set"};
+      return 0;
+  }
 
   //add record in orders table
   let playlist = {
@@ -150,7 +158,12 @@ exports.sellPlaylist = async function (ctx) {
     ctx.response.status = 403;
     ctx.response.body = {status: 'failed', err: "It's not your playlist"};
   }
-
+  if(!ctx.state.user.ILPUsername && !ctx.state.user.ILPPassword)
+  {
+    ctx.response.status = 403;
+    ctx.response.body = {status: 'failed', err: "ILP username and ILP password don't set"};
+    return 0;
+  }
   const videos = await ctx.state.youtubeAPI.getPlaylistItems(playlist.get('youtubeId'));
   const videoIds = videos.items.map((item) => {
     return item.contentDetails.videoId;
